@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/out_video_cab"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/outgoing_image_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="@dimen/margin_5dp"
+        android:layout_marginBottom="8dp"
+
+        >
+  <!--  <RelativeLayout
+        android:id="@+id/outgoing_video_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/sender"
+        android:layout_marginRight="@dimen/dime_10dp"
+        >-->
+
+        <RelativeLayout
+            android:layout_width="220dp"
+            android:layout_height="210dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="2dp"
+
+            android:layout_marginRight="@dimen/dime_5dp"
+            android:layout_marginBottom="2dp"
+            android:layout_below="@+id/outgoingImageName"
+            android:layout_toLeftOf="@+id/profilePicImageIncoming"
+            >
+
+            <!--<ImageView
+                android:id="@+id/outgoing_video_IV"
+                android:layout_width="match_parent"
+                android:layout_height="210dp"
+
+                android:src="@drawable/wallpaper"
+                android:scaleType="centerCrop"
+                 />-->
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/outgoing_video_IV"
+                android:layout_width="match_parent"
+                android:layout_height="210dp"
+                android:scaleType="centerCrop"
+                app:riv_corner_radius="15dip"
+                app:riv_mutate_background="true"
+                app:riv_tile_mode="repeat"
+                app:riv_oval="false" />
+            <ProgressBar
+                android:id="@+id/outgoing_video_progress_bar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/cancel_icon_pb"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:padding="5dp"
+                android:visibility="gone" />
+            <ImageView
+                android:id="@+id/outgoing_play_btn"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:padding="5dp"
+                android:src="@drawable/video_play_ibtn"
+                android:visibility="visible" />
+
+            <!--Retry icon-->
+            <!--<ImageView
+
+                android:id="@+id/outgoing_play_retrybtn"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:padding="5dp"
+                android:src="@drawable/video_play_ibtn"
+                android:visibility="gone" />-->
+            <TextView
+                android:id="@+id/outgoing_video_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/margin_20dp"
+                android:text="12.00 PM"
+                android:layout_toLeftOf="@+id/tickMarkFirstOutVideo"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+            <ImageView
+                android:id="@+id/tickMarkFirstOutVideo"
+                android:layout_width="@dimen/margin_15dp"
+                android:layout_height="@dimen/margin_15dp"
+                android:visibility="visible"
+                android:layout_marginLeft="@dimen/dime_5dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/delivered">
+            </ImageView>
+
+
+            <!--<RelativeLayout
+                android:id="@+id/rlForVideoUploadingPanel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:visibility="">
+
+                <Button
+                    android:id="@+id/btnImageUpload"
+                    android:layout_width="65dp"
+                    android:layout_height="70dp"
+                   />
+            </RelativeLayout>-->
+
+            <RelativeLayout
+                android:id="@+id/rlForVideoUploadingPanel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                >
+
+                <Button
+                    android:visibility="gone"
+                    android:id="@+id/btnVideoUpload"
+                    android:layout_width="65dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/retry_upload"
+                    />
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlForImageLoadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

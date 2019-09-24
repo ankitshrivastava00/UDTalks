@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="mapboxWhite">#ffffff</color>
+    <color name="mapboxBlue">#4264fb</color>
+    <color name="mapboxGrayLight">#c6d2e1</color>
+    <color name="mapboxPink">#ee4e8b</color>
+    <color name="mapboxYellow">#d9d838</color>
+    <color name="mapboxRed">#b43b71</color>
+    <color name="divider_line">#9e9102</color>
+
+
+    <color name="whiteBG">#fcf9ff</color>
+    <color name="light_gray">#D3D3D3</color>
+
+
+    <color name="colorActionMode">#009362</color>
+    <color name="colorControlActivated">#50FF4081</color>
+
+    <color name="background_transparent">#00000000</color>
+
+    <color name="colorPrimary">#0f8ff1</color>
+    <color name="colorPrimaryDark">#0f8ff1</color>
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#000000</color>
+    <color name="colorAccent">#c8e8ff</color>
+    <color name="orange">#ff9101</color>
+    <color name="black">#000000</color>
+
+
+    <color name="white">#FFFFFF</color>
+    <color name="blue_color_picker">#0066FF</color>
+    <color name="brown_color_picker">#AF593E</color>
+    <color name="green_color_picker">#01A368</color>
+    <color name="orange_color_picker">#FF861F</color>
+    <color name="red_color_picker">#ED0A3F</color>
+    <color name="red_orange_color_picker">#FF3F34</color>
+    <color name="sky_blue_color_picker">#76D7EA</color>
+    <color name="violet_color_picker">#8359A3</color>
+    <color name="yellow_color_picker">#FBE870</color>
+    <color name="yellow_green_color_picker">#C5E17A</color>
+    <color name="tool_bg">#151414</color>
+    <!-- Slide Menu -->
+
+    <color name="red_background">#f44336</color>
+
+    <color name="badge_color">#f44336</color>
+    <color name="status">#363636</color>
+    <color name="main_text_color">#363636</color>
+    <color name="sub_text_color">#555555</color>
+    <color name="gray_back">#EEEEEE</color>
+    <color name="super_dark_grey">#878786</color>
+    <!-- Slide Menu -->
+    <!--bottom tabs colors-->
+    <color name="rippelColor">#0099CC</color>
+    <color name="gray_topchat">#4e7877</color>
+    <color name="darkblue">#0E2572</color>
+    <color name="grey">#606060</color>
+    <color name="grey_light">#b7b0b0</color>
+    <color name="btn_bg">#ffa046</color>
+    <color name="btn_text_color">#4b2719</color>
+    <color name="HINT_TEXT_COLOR">#5a5a5a</color>
+    <color name="BACKGROUND_TRANSPARENT">#00000000</color>
+    <color name="BACKGROUND_COLOR">#693D29</color>
+
+    <!-- Slide Menu -->
+    <color name="list_item_title">#fff</color>
+    <color name="list_background">#303030</color>
+    <color name="list_background_pressed">#992416</color>
+    <color name="list_divider">#272727</color>
+    <color name="counter_text_bg">#626262</color>
+    <color name="counter_text_color">#c5c4c4</color>
+    <color name="background">#303030</color>
+    <color name="background_selected">#942012</color>
+    <color name="divider">#272727</color>
+
+    <color name="cardview_dark_background">#000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="light_silver">#f0eff5</color>
+    <color name="dark_blue">#579ae8</color>
+
+    <color name="green">#11a652</color>
+
+    <color name="yellow">#B18904</color>
+    <color name="dark_silver">#848484</color>
+    <color name="light_blue">#e0f7ff</color>
+    <color name="dark_gray">#585858</color>
+    <color name="maroon">#773f03</color>
+    <color name="dark_yellow">#93520C</color>
+    <color name="light_blue_2">#E5E8FE</color>
+    <color name="dark_orange">#f76f03</color>
+    <color name="dark_brown">#ae4d00</color>
+    <color name="dark_green">#198448</color>
+    <color name="start_color">#0000FF</color>
+    <color name="end_color">#FFA500</color>
+    <color name="center_color">#FFA500</color>
+    <color name="fain_grey">#999999</color>
+    <color name="dark_grey">#525252</color>
+    <color name="dark_black">#353535</color>
+    <color name="dark_blackish">#282828</color>
+    <color name="faint_gray">#858585</color>
+    <color name="faint_pink">#f16868</color>
+    <color name="faint_green">#28be75</color>
+    <color name="faint_blue">#00a7b1</color>
+    <color name="faint_orange">#ff8400</color>
+    <color name="purple">#9d0ec2</color>
+    <color name="dark_purple">#642891</color>
+    <!--bottom tabs colors-->
+    <color name="active_tabs">#252424</color>
+    <color name="inactive_tabs">#333333</color>rp
+    <color name="active_text">#05bffc</color>
+    <color name="inactive_text">#FFFFFF</color>
+    <color name="appBar">#0f8ff1</color>
+    <color name="agentcolor">#07cce9</color>
+    <color name="buyercolor">#f68602</color>
+    <color name="admincolor">#f14c10</color>
+    <color name="gcolor">#f13210</color>
+    <color name="sellercolor">#1892f0</color>
+    <color name="othercolor">#3d3d3d</color>
+    <color name="appBarlight">#f8f8f8</color>
+    <color name="editTextBack">#0099cb</color>
+    <color name="admin_text">#F69D1D</color>
+    <color name="active_agent">#4ae2fe</color>
+    <color name="multiple_image_select_primary">#0f8ff1</color>
+    <color name="multiple_image_select_primaryDark">#0f8ff1</color>
+    <color name="multiple_image_select_primaryLight">#C8E6C9</color>
+    <color name="multiple_image_select_accent">#0f8ff1</color>
+
+    <color name="multiple_image_select_primaryText">#212121</color>
+    <color name="multiple_image_select_secondaryText">#727272</color>
+    <color name="multiple_image_select_divider">#B6B6B6</color>
+
+    <color name="multiple_image_select_toolbarPrimaryText">#FFFFFF</color>
+
+    <color name="multiple_image_select_albumTextBackground">#99FFFFFF</color>
+    <color name="multiple_image_select_imageSelectBackground">#000000</color>
+
+    <color name="multiple_image_select_buttonText">#FFFFFF</color>
+    <color name="msg_selected">#8b0ac5fd</color>
+
+
+
+    <color name="tabs_background">#464646</color>
+
+    <color name="ud_blue">#0187F8</color>
+
+
+    <color name="inactive_text_157">#9D9D9D</color>
+    <color name="background_grey">#F3F3F3</color>
+
+    <color name="name_heading">#2e2e2d</color>
+    <color name="light_color">#414141</color>
+    <color name="career_text_color">#84caff</color>
+
+    <color name="seller_back">#0087f7</color>
+    <color name="buyer_back">#fa9401</color>
+    <color name="friends_back">#414141</color>
+    <color name="agent_back">#00bcfb</color>
+
+    <color name="seller_text">#84caff</color>
+    <color name="buyer_text">#FFBF11</color>
+    <color name="friends_text">#979D9D</color>
+    <color name="agent_text">#89ecfb</color>
+
+    <color name="white_transparent_profile">#E6ffffff</color>
+    <color name="light_green">#41c90c</color>
+
+    <color name="grey_F8F9F9">#F8F9F9</color>
+
+</resources>

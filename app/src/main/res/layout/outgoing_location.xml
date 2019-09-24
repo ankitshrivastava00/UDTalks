@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:id="@+id/outgoing_location_relative"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/outgong_linear_click"
+        android:layout_width="220dp"
+        android:layout_height="210dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="@dimen/dime_10dp"
+        android:layout_marginBottom="8dp"
+        android:layout_gravity="right"
+        android:background="@drawable/sender_bubble"
+        android:orientation="vertical">
+
+       <!-- <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/outgoing_map_image_IV"
+            android:layout_width="match_parent"
+            app:riv_corner_radius="15dip"
+
+            android:layout_height="150dp"
+            android:background="@drawable/fake_mapmin" />
+
+  -->
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/outgoing_map_image_IV"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/fake_mapmin"
+            app:riv_corner_radius_top_left="15dip"
+            app:riv_corner_radius_top_right="15dip"
+            android:layout_marginBottom="@dimen/margin_5dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/fake_mapmin"
+            app:riv_mutate_background="true"
+            app:riv_oval="false"
+            />
+
+        <TextView
+            android:id="@+id/outgoing_location_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginLeft="3dp"
+            android:text="CentralMall,Indoreertgergergergergerhrterherhdfghdfghdfghdfghdfghdfghdfghdfghdhdfghdfghdfghdfghdfghdfhdfghdghdhdfghdghdhhfgfghdfgh"
+            android:maxLines="2"
+            android:textColor="#FFFFFF"
+            android:textSize="12dp"
+            android:textStyle="bold" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/outgoing_location_time"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_weight="0.9"
+                android:gravity="right"
+                android:layout_gravity="center_vertical"
+                android:text="11:45 PM"
+                android:layout_marginTop="@dimen/dime_5dp"
+                android:textColor="#FFFFFF"
+                android:textSize="10dp" />
+
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_weight="0.1"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/tickMarkLocation"
+                    android:layout_width="@dimen/margin_15dp"
+                    android:layout_height="@dimen/margin_15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:src="@drawable/undelivered"
+                    android:visibility="visible" />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>
+
+
+    <!--
+    <?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+        xmlns:mapbox="http://schemas.android.com/apk/res-auto"
+
+        android:id="@+id/outgoing_location_relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/alignmentRelative"
+
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/margin200dp"
+            android:layout_below="@+id/outgoingName"
+            android:layout_marginLeft="110dp"
+            android:layout_marginTop="@dimen/dime_5dp"
+            android:layout_marginRight="@dimen/dime_10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/outgoing_map_image_IV"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin200dp"
+                android:layout_marginLeft="@dimen/margin_5dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginBottom="@dimen/margin_5dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/fake_mapmin"
+                app:riv_corner_radius="15dip"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="repeat" />
+            <ImageView
+                android:layout_width="@dimen/dime_40dp"
+                android:layout_height="@dimen/dime_40dp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/location"
+
+                />
+            <View
+                android:id="@+id/outgoing_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin200dp"
+                ></View>
+            <TextView
+                android:id="@+id/outgoing_location_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/r"
+                android:layout_marginLeft="@dimen/margin_10dp"
+                android:layout_marginRight="@dimen/dime_5dp"
+                android:layout_marginBottom="5dp"
+                android:maxLines="2"
+                android:text="Indorre Liasd  hajbdf lhasdf ghbasdf  basdfb hhbhasd f bhasddf bhjas dfgb hjasfg b hlasd fba sf jhb alsfhhjafghasdfasdfasdf"
+                android:textColor="@color/black"
+                android:textSize="10sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/outgoing_text"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/r"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:id="@+id/outgoing_location_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/margin_5dp"
+                    android:layout_marginRight="@dimen/dime_20dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_toLeftOf="@+id/tickMarkLocation"
+                    android:text="12.00 pm"
+                    android:textColor="@color/grey"
+                    android:textSize="10sp" />
+
+
+                <ImageView
+                    android:id="@+id/tickMarkLocation"
+                    android:layout_width="@dimen/margin_15dp"
+                    android:layout_height="@dimen/margin_15dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/undelivered"
+                    android:visibility="visible" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    -->

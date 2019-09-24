@@ -1,0 +1,126 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/incoming_linear_contact"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:layout_marginLeft="@dimen/margin_5dp"
+            android:layout_marginRight="@dimen/margin_85dp"
+            android:layout_marginTop="@dimen/margin_5dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/card_view_1"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:layout_marginTop="7dp"
+                android:layout_gravity="center"
+                android:background="@drawable/reciever_bubble"
+                android:orientation="vertical">
+
+
+
+                <TextView
+                    android:id="@+id/incoming_contact_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="50dp"
+
+                    android:text="9713172282"
+                    android:textColor="@color/black"
+                    android:textSize="17dp"
+                    android:textStyle="normal" />
+                <TextView
+                    android:id="@+id/incoming_contact_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Prashant"
+                    android:textColor="@color/black"
+                    android:textSize="17dp"
+                    android:textStyle="normal" />
+
+                <Button
+                    android:id="@+id/incoming_view_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/dime_5dp"
+                    android:background="@drawable/chat_right"
+                    android:text="View"
+                    android:textColor="#FFF" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/outgoing_text"
+                    android:layout_gravity="right"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/incoming_contact_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="bottom"
+                        android:layout_marginLeft="@dimen/textSize20"
+                        android:layout_toLeftOf="@+id/tickMarkincoming_contact_time"
+                        android:gravity="bottom"
+                        android:layout_alignParentRight="true"
+                        android:text="12.00 pm"
+                        android:textColor="#a9a9a9"
+                        android:layout_marginRight="@dimen/margin_10dp"
+                        android:textSize="10sp" />
+
+
+                    <ImageView
+                        android:id="@+id/tickMarkincoming_contact_time"
+                        android:layout_width="@dimen/margin_20dp"
+                        android:layout_height="@dimen/margin_20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="bottom|right|center_vertical"
+                        android:layout_marginRight="@dimen/dime_10dp"
+
+                        android:paddingTop="@dimen/marginBottom5dp"
+                        android:src="@drawable/undelivered"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/back_selected"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/btn_capture_photo"
+                    android:layout_width="@dimen/dime_60dp"
+                    android:layout_height="@dimen/dime_60dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/user_placeholder" />
+            </LinearLayout>
+
+        </FrameLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

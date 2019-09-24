@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/incoming_video_cab"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dime_5dp"
+        android:layout_marginTop="@dimen/dime_5dp"
+     >
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/incomingImageName"
+            android:layout_gravity="center|left|top"
+            android:layout_toRightOf="@+id/incomIngImagePic"
+            android:gravity="center"
+
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/leftBubble"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <!---->
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true">
+
+                <!--android:layout_margin="5dip"-->
+
+                <RelativeLayout
+                    android:id="@+id/incomming_image_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                  >
+                    <!--   android:visibility="gone" -->
+                    <!--rounded_chat_back-->
+
+                    <RelativeLayout
+                        android:id="@+id/imgLl"
+                        android:layout_width="220dp"
+                        android:layout_height="210dp"
+                        android:layout_marginLeft="@dimen/dime_5dp"
+                        android:layout_marginTop="3dp"
+
+                        android:layout_marginRight="3dp"
+                        android:layout_marginBottom="@dimen/dime_5dp">
+
+                        <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/incoming_video_IV"
+                            android:layout_width="match_parent"
+                            android:layout_height="210dp"
+                            android:layout_centerVertical="true"
+                            android:scaleType="centerCrop"
+                            app:riv_corner_radius="15dip"
+                            app:riv_mutate_background="true"
+                            app:riv_oval="false"
+                            app:riv_tile_mode="repeat" />
+
+                        <!--   <ImageView
+                               android:id="@+id/incoming_video_IV"
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content"
+
+                               android:adjustViewBounds="true"
+                               android:scaleType="centerCrop"
+                                />-->
+                        <ProgressBar
+                            android:id="@+id/incoming_video_progress_bar"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_centerInParent="true"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/cancel_icon_pb"
+                            android:visibility="gone" />
+
+                        <ImageView
+
+                            android:id="@+id/incoming_play_btn"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_centerInParent="true"
+                            android:adjustViewBounds="true"
+                            android:padding="5dp"
+                            android:src="@drawable/video_play_ibtn"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/incoming_video_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="@dimen/dime_5dp"
+                            android:paddingLeft="2dp"
+                            android:text="12.00"
+                            android:textColor="#a9a9a9"
+                            android:textSize="12sp" />
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlForIncomingImageLoadingPanel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:indeterminate="true" />
+                </RelativeLayout>
+
+                <!--<RelativeLayout
+                    android:id="@+id/rlForImageDownloadingPanel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <Button
+                        android:id="@+id/btnImageDownload"
+                        android:layout_width="65dp"
+                        android:layout_height="70dp"
+                        android:background="@drawable/image_download"
+                        android:visibility="gone" />
+                </RelativeLayout>-->
+
+                <RelativeLayout
+                    android:id="@+id/rlForVideoDownloadingPanel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    >
+
+                    <Button
+                        android:id="@+id/btnVideoDownload"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="@drawable/retry_icon"
+                        android:visibility="gone" />
+                </RelativeLayout>
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>
+

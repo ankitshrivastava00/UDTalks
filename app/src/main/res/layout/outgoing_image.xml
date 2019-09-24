@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/out_image_cab"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+    android:layout_alignParentRight="true"
+
+    android:orientation="vertical">
+
+    <RelativeLayout
+
+        android:id="@+id/outgoing_image_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="@dimen/dime_5dp"
+        android:layout_marginBottom="8dp"
+
+        >
+
+        <RelativeLayout
+            android:layout_width="220dp"
+            android:layout_height="210dp"
+            android:layout_below="@+id/outgoingImageName"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="2dp"
+
+            android:layout_marginRight="@dimen/dime_5dp"
+            android:layout_marginBottom="2dp"
+            android:layout_toLeftOf="@+id/profilePicImageIncoming">
+
+            <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/outgoing_image_IV"
+                android:layout_width="match_parent"
+                android:layout_height="210dp"
+                android:scaleType="centerCrop"
+                app:riv_corner_radius="15dip"
+                app:riv_mutate_background="true"
+                app:riv_oval="false"
+                app:riv_tile_mode="repeat" />
+
+          <!--  <RelativeLayout
+                android:id="@+id/outgoing_linear_selection"
+                android:layout_width="match_parent"
+                android:layout_height="210dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dime_5dp"
+                android:layout_marginRight="@dimen/dime_5dp"
+
+                android:gravity="center"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="210dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dime_5dp"
+                    android:layout_marginRight="@dimen/dime_5dp"
+                    android:background="@color/grey"
+                    android:alpha="0.3"
+                    android:gravity="center"></View>
+
+                <ImageView
+
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:src="@drawable/select_tick" />
+            </RelativeLayout>-->
+
+            <ProgressBar
+                android:id="@+id/outgoing_progress_bar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:padding="5dp"
+                android:src="@drawable/loader_lo"
+                android:background="@drawable/cancel_icon_pb"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/outgoing_image_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="@dimen/margin_20dp"
+                android:layout_toLeftOf="@+id/tickMarkFirstOutImage"
+                android:text="12.00 PM"
+                android:textColor="#FFF"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/tickMarkFirstOutImage"
+                android:layout_width="@dimen/margin_15dp"
+                android:layout_height="@dimen/margin_15dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/undelivered"
+                android:visibility="visible" />
+
+            <RelativeLayout
+                android:id="@+id/rlForImageUploadingPanel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+               >
+
+                <Button
+                    android:visibility="gone"
+                    android:id="@+id/btnImageUpload"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:background="@drawable/retry_upload" />
+            </RelativeLayout>
+
+            <!--<RelativeLayout
+                android:id="@+id/rlForVideoUploadingPanel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/btnVideoUpload"
+                    android:layout_width="65dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/retry_upload" />
+            </RelativeLayout>-->
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+   <!-- <View
+        android:id="@+id/outgoing_select_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/grey"
+        android:visibility="visible"
+        android:alpha="0.5"
+        ></View>-->
+
+</RelativeLayout>

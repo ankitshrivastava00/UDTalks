@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/out_tv_cab"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/outgoing_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_70dp"
+            android:layout_marginTop="@dimen/dime_5dp"
+            android:minWidth="70dp"
+
+            android:layout_marginRight="@dimen/dime_10dp"
+            android:background="@drawable/sender_bubble"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/outgoing_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="left"
+                android:layout_marginRight="@dimen/dime_10dp"
+                android:layout_marginTop="@dimen/dime_5dp"
+                android:layout_marginLeft="@dimen/dime_10dp"
+                android:fontFamily="sans-serif-light"
+                android:text="hey"
+
+                android:textColor="@color/white"
+                android:textSize="16sp"
+           />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_below="@id/outgoing_text"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:id="@+id/outgoing_text_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/margin_20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_toLeftOf="@+id/tickMarkFirstOut"
+                    android:text="12.00 pm"
+                    android:textColor="#FFF"
+                    android:textSize="10sp" />
+
+
+                <ImageView
+                    android:id="@+id/tickMarkFirstOut"
+                    android:layout_width="@dimen/margin_15dp"
+                    android:layout_height="@dimen/margin_15dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/uploaded"
+                    android:visibility="visible" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

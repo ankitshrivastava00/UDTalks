@@ -1,0 +1,76 @@
+<resources>
+    <dimen name="margin_pdfdp">100dp</dimen>
+    <dimen name="margin_15dp">15dp</dimen>
+    <dimen name="margin_20dp">20dp</dimen>
+    <dimen name="margin_25dp">25dp</dimen>
+    <dimen name="margin_30dp">30dp</dimen>
+    <dimen name="margin_40dp">40dp</dimen>
+    <dimen name="margin_50dp">50dp</dimen>
+    <dimen name="margin_55dp">55dp</dimen>
+    <dimen name="margin_60dp">60dp</dimen>
+    <dimen name="margin_70dp">70dp</dimen>
+    <dimen name="margin_80dp">80dp</dimen>
+    <dimen name="margin_85dp">190dp</dimen>
+    <dimen name="margin_100dp">100dp</dimen>
+    <dimen name="margin_200dp">200dp</dimen>
+    <dimen name="margin_300dp">300dp</dimen>
+    <dimen name="margin_400dp">400dp</dimen>
+    <dimen name="margin120dp">120dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="tab_max_width">264dp</dimen>
+    <dimen name="tab_padding_bottom">16dp</dimen>
+    <dimen name="tab_label">14sp</dimen>
+    <dimen name="custom_tab_layout_height">72dp</dimen>
+    - <!-- <dimen name="activity_horizontal_margin">16dp</dimen>
+  -->
+    - <!-- <dimen name="activity_vertical_margin">16dp</dimen>
+  -->
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="top_margin">15dp</dimen>
+    <dimen name="dime_40dp">40dp</dimen>
+    - <!--  editProduct type Activity
+  -->
+
+    <dimen name="productTypetvsize20sp">20sp</dimen>
+    <dimen name="marginProductTypeEdit">20sp</dimen>
+    <dimen name="marginleftRight20dp">20dp</dimen>
+    <dimen name="marginTop20dp">20dp</dimen>
+    <dimen name="marginTop10dp">10dp</dimen>
+    <dimen name="marginLeftRight10dp">10dp</dimen>
+    <dimen name="margin150dp">150dp</dimen>
+    <dimen name="marginBottom10dp">10dp</dimen>
+    <dimen name="paddingLeftRight40dp">40dp</dimen>
+    <dimen name="paddingLeft">5dp</dimen>
+    <dimen name="marginBottom5dp">5dp</dimen>
+    <dimen name="margin200dp">200dp</dimen>
+    <dimen name="margin300dp">300dp</dimen>
+    - <!--  textsize
+  -->
+    <dimen name="textSize20">20sp</dimen>
+    <dimen name="search_ediitext_width">100dp</dimen>
+    <dimen name="padding_checkbox">25dp</dimen>
+    <dimen name="dime_5dp">5dp</dimen>
+    <dimen name="dime_10dp">10dp</dimen>
+    <dimen name="dime_30dp">30dp</dimen>
+    <dimen name="dime_50dp">50dp</dimen>
+    <dimen name="dime_60dp">60dp</dimen>
+    <dimen name="dime_20dp">20dp</dimen>
+    <dimen name="margin_5dp">5dp</dimen>
+    <dimen name="margin_10dp">10dp</dimen>
+    - <!--  for login activity
+  -->
+    <dimen name="rounded_corner">70dp</dimen>
+    <dimen name="stroke_width">2dp</dimen>
+    <dimen name="red_button_stroke_width">1dp</dimen>
+    - <!--  for tab activity
+  -->
+    <dimen name="rounded_corner_tab">20dp</dimen>
+    <dimen name="pic_group">50dp</dimen>
+    <dimen name="item_offset">2dp</dimen>
+    <dimen name="btnText">20sp</dimen>
+    <dimen name="dime_35dp">35dp</dimen>
+
+
+
+</resources>

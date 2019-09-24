@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:emojicon="http://schemas.android.com/tools"
+    android:id="@+id/incoming_pdf"
+    android:layout_width="match_parent"
+
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dime_5dp"
+        android:layout_marginTop="@dimen/dime_5dp"
+        android:layout_marginRight="@dimen/margin_85dp">
+
+        <LinearLayout
+            android:id="@+id/incoming_linear_click"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_15dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toRightOf="@+id/profilePic"
+            android:background="@drawable/reciever_bubble"
+            android:gravity="left|center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/dime_5dp"
+            android:paddingLeft="17dp">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtincomming_pdf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:maxLength="10"
+                    android:paddingRight="4dp"
+                    android:text="EXECL FILE"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    emojicon:emojiconSize="25sp" />
+
+                <TextView
+
+                    android:id="@+id/incoming_pdf_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/incomming_text"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="3dp"
+                    android:gravity="left"
+                    android:paddingRight="2dp"
+                    android:text="12.00"
+                    android:textColor="#a9a9a9"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/incoming_doc_icon"
+            android:layout_width="80dp"
+            android:layout_height="@dimen/dime_50dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/pdf" />
+        <ProgressBar
+            android:id="@+id/incoming_doc_icon_pb"
+            android:layout_width="64dp"
+            android:background="@drawable/cancel_icon_pb"
+            android:layout_height="64dp"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"/>
+        <ImageView
+            android:id="@+id/incoming_doc_icon_download"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/retry_icon"
+            android:visibility="gone"/>
+    </RelativeLayout>
+</LinearLayout>
