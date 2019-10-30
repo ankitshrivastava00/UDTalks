@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/ud_blue"
+>
+
+    <LinearLayout
+        android:id="@+id/ogAppbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:id="@+id/chatName"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight=".54"
+
+            android:gravity="center|left"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/nameTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left|bottom"
+                android:gravity="center|left"
+                android:singleLine="true"
+                android:text="Mark | Kids Fashion"
+                android:textColor="#FFF"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/statusTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nameTv"
+                android:layout_gravity="center|left"
+                android:gravity="center|left"
+                android:singleLine="true"
+                android:text="Online"
+                android:textColor="#FFF"
+                android:textSize="12sp"
+                android:visibility="gone" />
+            <TextView
+                android:id="@+id/typingStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nameTv"
+                android:layout_gravity="center|left"
+                android:gravity="center|left"
+                android:singleLine="true"
+                android:text="Online"
+                android:textColor="#FFF"
+                android:textSize="12sp"
+                android:visibility="gone" />
+            <!--
+                        <TextView
+                            android:id="@+id/typingStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/nameTv"
+                            android:layout_gravity="center|left"
+                            android:gravity="center|left"
+                            android:singleLine="true"
+                            android:text="Typing"
+                            android:textColor="#FFF"
+                            android:textSize="12sp"
+                            android:visibility="gone" />-->
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+
+</androidx.appcompat.widget.Toolbar>
+

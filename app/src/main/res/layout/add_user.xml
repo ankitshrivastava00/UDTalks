@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="@dimen/dime_10dp"
+            android:gravity="center"
+            android:background="@color/white"
+
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/addGroup"
+                android:layout_width="match_parent"
+                android:padding="2dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/margin_10dp"
+                android:layout_marginLeft="@dimen/margin_5dp"
+                android:layout_marginRight="@dimen/margin_5dp"
+                android:orientation="horizontal"
+                android:weightSum="1"
+
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/dime_40dp"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginRight="@dimen/dime_10dp"
+                    android:layout_weight="0.7"
+                    android:gravity="right|center_vertical"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/dime_40dp"
+                        android:layout_height="@dimen/dime_40dp"
+                        android:src="@drawable/create_group"
+
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:layout_weight="0.3"
+                    android:gravity="left|center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:gravity="bottom"
+                        android:text="Create  Business Group"
+                        android:textColor="#000"
+
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginRight="@dimen/margin_70dp"
+                        android:layout_marginTop="@dimen/dime_10dp"
+                        android:background="#000"></View>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/addUserFromUD"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/margin_5dp"
+                android:layout_marginLeft="@dimen/margin_5dp"
+                android:layout_marginRight="@dimen/margin_5dp"
+
+                android:orientation="horizontal"
+                android:weightSum="1"
+
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginRight="@dimen/dime_10dp"
+                    android:layout_weight="0.7"
+                    android:minHeight="@dimen/dime_40dp"
+
+                    android:gravity="right|center_vertical"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/dime_40dp"
+                        android:layout_height="@dimen/dime_40dp"
+                        android:src="@drawable/add_user_single"
+
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:layout_weight="0.3"
+                    android:gravity="left|center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Add From UD Users"
+                        android:textColor="#000"
+
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginRight="@dimen/margin_70dp"
+
+                        android:layout_marginTop="@dimen/margin_10dp"
+                        android:background="#000"></View>
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/addUserFromPhone"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/margin_5dp"
+                android:layout_marginLeft="@dimen/margin_5dp"
+                android:layout_marginRight="@dimen/margin_5dp"
+
+                android:orientation="horizontal"
+                android:weightSum="1"
+
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginRight="@dimen/dime_10dp"
+                    android:layout_weight="0.7"
+                    android:minHeight="@dimen/dime_40dp"
+
+                    android:gravity="right|center_vertical"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/dime_40dp"
+                        android:layout_height="@dimen/dime_40dp"
+                        android:src="@drawable/add_contact"
+
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:layout_weight="0.3"
+                    android:gravity="left|center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Add From Phone Contact"
+                        android:textColor="#000"
+
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginRight="@dimen/margin_70dp"
+
+                        android:layout_marginTop="@dimen/margin_10dp"
+                        android:background="#000"></View>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/scanUser"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:weightSum="1"
+
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginRight="@dimen/dime_10dp"
+                    android:layout_weight="0.7"
+                    android:gravity="right|center_vertical"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/dime_40dp"
+                        android:layout_height="@dimen/dime_40dp"
+                        android:src="@drawable/scan_icon"
+
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:layout_weight="0.3"
+                    android:gravity="left|center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Scan To Add User  "
+                        android:layout_marginRight="@dimen/margin_50dp"
+
+                        android:textColor="#000"
+
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/autoStartPermissionUser"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                android:visibility="gone"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginRight="@dimen/dime_10dp"
+                    android:layout_weight="0.7"
+                    android:gravity="right|center_vertical"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/dime_40dp"
+                        android:layout_height="@dimen/dime_40dp"
+                        android:src="@drawable/scan_icon"
+
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:layout_weight="0.3"
+                    android:gravity="left|center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Allow autostart"
+                        android:layout_marginRight="@dimen/margin_50dp"
+
+                        android:textColor="#000"
+
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

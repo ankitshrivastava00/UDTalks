@@ -30,36 +30,38 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         //context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory()+"UDTalks")));
-
-
         sd = new SessionManagement(context);
         cd = new ConnectionDetector(context);
         ChatApplication app = ((ChatApplication) context.getApplicationContext());
         mSocket = app.getSocket();
         String status = NetworkUtil.getConnectivityStatusString(context);
         if (Build.VERSION.SDK_INT >= 23) {
-          /*  Intent serviceIntent = new Intent(context, SendDataService.class);
+            /*
+            Intent serviceIntent = new Intent(context, SendDataService.class);
             Intent serviceGIntent = new Intent(context, SendGroupDataService.class);
             startWakefulService(context, serviceIntent);
-            startWakefulService(context, serviceGIntent);*/
+            startWakefulService(context, serviceGIntent);
+            */
         } else {
-          /*  Intent serviceIntent = new Intent(context, SendDataService.class);
+            /*
+            Intent serviceIntent = new Intent(context, SendDataService.class);
             Intent serviceGIntent = new Intent(context, SendGroupDataService.class);
             context.startService(serviceIntent);
-            context.startService(serviceGIntent);*/
+            context.startService(serviceGIntent);
+            */
         }
         if (sd.getLoginStatus().equalsIgnoreCase("true")){
         if (status.equalsIgnoreCase("enabled")) {
             Pushy.listen(context);
             Log.e("INTERNET","YESS");
             Toast.makeText(app, "Internet enable", Toast.LENGTH_SHORT).show();
-            /*CustomLogger.getInsatance(context).putLog("Network Connected");
+            /*
+            CustomLogger.getInsatance(context).putLog("Network Connected");
             context.startService(new Intent(context, SendOfflineDataService.class));
-*/
+            */
             Intent intent1 = new Intent("INTERNET");
             intent1.putExtra("key", "YES");
             //LocalBroadcastManager.getInstance(context).sendBroadcast(intent1);
-
             mSocket.connect();
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("id", sd.getKeyId());
@@ -69,15 +71,13 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
             jsonObject.addProperty("isOnlineStatus", "false");
             mSocket.emit("userid", jsonObject);
 /*
-
             JsonObject jsonObject1 = new JsonObject();
             jsonObject1.addProperty("id", sd.getKeyId());
             jsonObject1.addProperty("device_id", sd.getUserFcmId());
             mSocket.emit("notificationAlert", jsonObject1);
 */
-
-            //Utils.cancelAlarm(context);
-            //  Utils.scheduleAlarm(context);
+        // Utils.cancelAlarm(context);
+        // Utils.scheduleAlarm(context);
         } else {
             Pushy.listen(context);
             JsonObject jsonObject = new JsonObject();
@@ -89,7 +89,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
             Intent intent1 = new Intent("INTERNET");
             intent1.putExtra("key", "NO");
             mSocket.disconnect();
-         //   LocalBroadcastManager.getInstance(context).sendBroadcast(intent1);
+         // LocalBroadcastManager.getInstance(context).sendBroadcast(intent1);
         }
     }
     }

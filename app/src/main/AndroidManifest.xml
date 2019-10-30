@@ -79,7 +79,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup,icon,theme,label"
      >
-        <activity android:name=".activity.LoginActivity"
+        <activity android:name=".activity.SplashScreen"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden"
@@ -90,8 +90,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            >
+
+        </activity>
 
         <activity android:name=".activity.ChatUserListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            ></activity>
+     <activity android:name=".single_chat.activity.SingleChatActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            ></activity>
+        <activity android:name=".activity.UserListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden"
@@ -132,6 +149,7 @@
         <service android:name="me.pushy.sdk.services.PushyJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="true" />
+
 
     </application>
 

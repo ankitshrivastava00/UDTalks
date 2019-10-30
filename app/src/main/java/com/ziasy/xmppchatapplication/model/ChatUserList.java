@@ -7,216 +7,126 @@ import java.util.Comparator;
  */
 
 public class ChatUserList {
-    private String username;
-    private String mute;
 
-    private String admin;
-
-    public String getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(String admin) {
-        this.admin = admin;
-    }
-    private String name;
-    private String email;
-    private String did;
-    private String chattype;
-    private String flag = "false";
-    String id;
-    String lastMessage = "";
-    String isOnline = "false";
-    String time;
-
-    public String getMute() {
-        return mute;
-    }
-
-    public void setMute(String mute) {
-        this.mute = mute;
-    }
-
-    String imageUrl;
-    String datetime;
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    String description;
-    String count = "0";
-
-    private String image;
-    private String FROM;
-    private String type;
-    private String data;
-
-    public String getChattype() {
-        return chattype;
-    }
-
-    public void setChattype(String chattype) {
-        this.chattype = chattype;
-    }
-
-
-    public String getFlag() {
-        return flag;
-    }
-
-    public void setFlag(String flag) {
-        this.flag = flag;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getLastMessage() {
-        return lastMessage;
-    }
-
-    public void setLastMessage(String lastMessage) {
-        this.lastMessage = lastMessage;
-    }
-
-    public String getIsOnline() {
-        return isOnline;
-    }
-
-    public void setIsOnline(String isOnline) {
-        this.isOnline = isOnline;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getDatetime() {
-        return datetime;
-    }
-
-    public void setDatetime(String datetime) {
-        this.datetime = datetime;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String getCount() {
-        return count;
-    }
-
-    public void setCount(String count) {
-        this.count = count;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String Id,Name,Description,LastMessage,Datetime,Time,Userstatus,Photo,Dtype,Message,Chattype,Did,Admin,Count,Mute;
 
     public String getId() {
-        return id;
+        return Id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        Id = id;
     }
 
-    public static Comparator<ChatUserList> StuNameComparator = new Comparator<ChatUserList>() {
-
-        public int compare(ChatUserList s1, ChatUserList s2) {
-            String StudentName1 = s1.getDatetime().toUpperCase();
-            String StudentName2 = s2.getDatetime().toUpperCase();
-            //ascending order
-            //return StudentName1.compareTo(StudentName2);
-            //descending order
-            return StudentName2.compareTo(StudentName1);
-        }
-    };
-
-    @Override
-    public String toString() {
-        return "[ name=" + name + ", datetime=" + datetime + ", count=" + count + ", id=" + id + "]";
+    public String getName() {
+        return Name;
     }
 
-
-    public String getImage() {
-        return image;
+    public void setName(String name) {
+        Name = name;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public String getDescription() {
+        return Description;
     }
 
-    public String getFROM() {
-        return FROM;
+    public void setDescription(String description) {
+        Description = description;
     }
 
-    public void setFROM(String FROM) {
-        this.FROM = FROM;
+    public String getLastMessage() {
+        return LastMessage;
+    }
+
+    public void setLastMessage(String lastMessage) {
+        LastMessage = lastMessage;
+    }
+
+    public String getDatetime() {
+        return Datetime;
+    }
+
+    public void setDatetime(String datetime) {
+        Datetime = datetime;
+    }
+
+    public String getTime() {
+        return Time;
+    }
+
+    public void setTime(String time) {
+        Time = time;
+    }
+
+    public String getUserstatus() {
+        return Userstatus;
+    }
+
+    public void setUserstatus(String userstatus) {
+        Userstatus = userstatus;
+    }
+
+    public String getPhoto() {
+        return Photo;
+    }
+
+    public void setPhoto(String photo) {
+        Photo = photo;
+    }
+
+    public String getDtype() {
+        return Dtype;
+    }
+
+    public void setDtype(String dtype) {
+        Dtype = dtype;
+    }
+
+    public String getMessage() {
+        return Message;
+    }
+
+    public void setMessage(String message) {
+        Message = message;
+    }
+
+    public String getChattype() {
+        return Chattype;
+    }
+
+    public void setChattype(String chattype) {
+        Chattype = chattype;
     }
 
     public String getDid() {
-        return did;
+        return Did;
     }
 
     public void setDid(String did) {
-        this.did = did;
+        Did = did;
     }
 
-
-    public static Comparator<ChatUserList> getStuNameComparator() {
-        return StuNameComparator;
+    public String getAdmin() {
+        return Admin;
     }
 
-    public static void setStuNameComparator(Comparator<ChatUserList> stuNameComparator) {
-        StuNameComparator = stuNameComparator;
+    public void setAdmin(String admin) {
+        Admin = admin;
     }
 
-    public String getType() {
-        return type;
+    public String getCount() {
+        return Count;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setCount(String count) {
+        Count = count;
     }
 
-    public String getData() {
-        return data;
+    public String getMute() {
+        return Mute;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setMute(String mute) {
+        Mute = mute;
     }
 }

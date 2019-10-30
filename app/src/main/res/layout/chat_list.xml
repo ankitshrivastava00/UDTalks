@@ -216,10 +216,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-
                 android:orientation="vertical"
-
-
                 >
 
                 <TextView
@@ -228,7 +225,7 @@
                     android:gravity="center"
                     android:text="No Contacts Yet..."
                     android:textColor="@color/black"
-                    android:textSize="18dp" />
+                    android:textSize="18dp" ></TextView>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -237,8 +234,8 @@
                     android:gravity="center"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:text="Press on Add Icon, And Select The Way You Prefer To Add Friends or Businessman"
-                    android:textColor="@color/grey" />
+                    android:text="Press On Add Icon, And Select The Way You Prefer To Add Friends or Businessman"
+                    android:textColor="@color/grey" ></TextView>
             </LinearLayout>
         </RelativeLayout>
         <View

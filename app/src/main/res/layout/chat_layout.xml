@@ -16,12 +16,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
+   <!--     <ImageView
             android:id="@+id/backImg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/wall_default"
-            android:scaleType="fitXY" />
+            android:scaleType="fitXY" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                     android:textSize="15dp"
                     android:textStyle="bold" />
 
-                <com.ziasy.xmppchatapplication.util.ui.CustomEditText
+                <com.ziasy.xmppchatapplication.common.CustomEditText
                     android:id="@+id/searchEt"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
@@ -175,8 +175,8 @@
 
 
 
-                    <android.support.v7.widget.RecyclerView
-                            android:id="@+id/msgListView"
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerId"
 
                             tools:listitem="@layout/incoming_reply_msg"
                             android:layout_width="match_parent"
@@ -279,22 +279,6 @@
                                 android:gravity="center"
                                 android:visibility="visible">
 
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginRight="5dp">
-
-                                    <ImageView
-                                        android:id="@+id/smileyBtn"
-                                        android:layout_width="40dp"
-                                        android:layout_height="40dp"
-                                        android:layout_gravity="center"
-                                        android:layout_marginBottom="8dp"
-                                        android:layout_marginTop="4dp"
-                                        android:scaleType="fitCenter"
-                                        android:src="@drawable/emoji23" />
-                                </LinearLayout>
-
                                 <EditText
                                     android:id="@+id/msgEditText"
                                     android:layout_width="0dp"
@@ -339,8 +323,6 @@
                                     android:scaleType="centerInside"
                                     android:src="@drawable/voice_recording"
                                     android:visibility="gone" />
-
-
                             </LinearLayout>
                         </LinearLayout>
 
@@ -353,7 +335,6 @@
                             <com.devlomi.record_view.RecordView
                                 android:id="@+id/record_view"
                                 android:layout_width="352dp"
-
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentBottom="true"
                                 android:layout_centerVertical="true"
@@ -374,14 +355,12 @@
                                 android:layout_marginRight="@dimen/margin_10dp"
                                 android:padding="5dp"
                                 android:layout_marginBottom="9dp"
-
                                 android:src="@drawable/voice_recording"
                                 android:visibility="visible" />
 
                         </RelativeLayout>
                     </RelativeLayout>
-
-</LinearLayout>
+                    </LinearLayout>
                 </RelativeLayout>
             </FrameLayout>
         </LinearLayout>

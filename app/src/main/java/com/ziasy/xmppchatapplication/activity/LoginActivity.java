@@ -195,7 +195,6 @@ pd.show();
                             @Override
                             public void onResponse(String response) {
                              /*   try {
-
                                     JSONObject object = new JSONObject(response);
                                     String id = object.getString("id");
                                     String number = object.getString("number");
@@ -203,15 +202,13 @@ pd.show();
                                     String name = object.getString("name");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                }
-*/
-                                try {
+                                }*/
 
+                                try {
                                     JSONObject object = new JSONObject(response.trim());
                                     JSONArray jsonArray = object.getJSONArray("result");
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         JSONObject object1 = jsonArray.getJSONObject(i);
-
                                         eid = object1.getString("id");
                                         number = object1.getString("number");
                                         status = object1.getString("status");
@@ -228,7 +225,7 @@ pd.show();
                                         sd.setUserName(name);
                                         sd.setKeyId(eid);
                                         sd.setUserMobile(number);
-                                        //sd.setLoginStatus("true");
+                                        sd.setLoginStatus("true");
                                         Intent i = new Intent(LoginActivity.this, ChatUserListActivity.class);
                                         startActivity(i);
                                         finish();
@@ -238,7 +235,7 @@ pd.show();
                                         sd.setUserName(name);
                                         sd.setKeyId(eid);
                                         sd.setUserMobile(number);
-                                        //sd.setLoginStatus("true");
+                                        sd.setLoginStatus("true");
                                         Intent i = new Intent(LoginActivity.this, ChatUserListActivity.class);
                                         startActivity(i);
                                         finish();
@@ -247,8 +244,6 @@ pd.show();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-
-
                             }
                         },
                         new Response.ErrorListener() {
@@ -256,7 +251,8 @@ pd.show();
                             public void onErrorResponse(VolleyError error) {
                                 pd.dismiss();
                             }
-                        }) {
+                        })
+                {
                     @Override
                     protected Map<String, String> getParams() {
                         Map<String, String> params = new HashMap<String, String>();

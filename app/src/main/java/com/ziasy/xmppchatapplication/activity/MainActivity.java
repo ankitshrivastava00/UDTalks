@@ -1,8 +1,10 @@
-package com.ziasy.xmppchatapplication;
+package com.ziasy.xmppchatapplication.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.ziasy.xmppchatapplication.R;
 
 public class MainActivity extends AppCompatActivity {
 

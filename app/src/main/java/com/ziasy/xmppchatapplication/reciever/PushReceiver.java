@@ -32,25 +32,34 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import com.ziasy.xmppchatapplication.R;
+import com.ziasy.xmppchatapplication.callback.SingleChatInterface;
+import com.ziasy.xmppchatapplication.common.SessionManagement;
+import com.ziasy.xmppchatapplication.database.DBUtil;
+import com.ziasy.xmppchatapplication.model.ChatUserList;
+import com.ziasy.xmppchatapplication.single_chat.activity.SingleChatActivity;
+
+import static com.ziasy.xmppchatapplication.common.Utils.timeConverter;
 
 public class PushReceiver extends BroadcastReceiver {
     private String pusddid = null,reciverid = null,uid = null, image = null, description = null, admin = null, chattype = null, message = null, dtype = null, senderid = null, isread = null, deliver = null,
             sname = null, did = null, datetime = null, doc_name=null, uname= null;
-  //  SessionManagement sd;
+    SessionManagement sd;
     Intent intent;
    // private LocalRecDownload localRecDownload;
     String thumb=null;
   //  LocalDBHelper localDBHelper;
+    private SingleChatInterface singleChatInterface;
     @Override
     public void onReceive(Context context, Intent intent) {
+        this.singleChatInterface= (SingleChatInterface) context;
         /*Intent intent1= new Intent(context, SendDataService.class);
         context.startService(intent1);*/
         String notificationTitle = "MyApp";
         String notificationText = "Test notification";
-      /*  sd = new SessionManagement(context);
-        localDBHelper= new LocalDBHelper(context);
+        sd = new SessionManagement(context);
+       // localDBHelper= new LocalDBHelper(context);
         //new LocalDBHelper(context).callOnCreate();
-        localRecDownload=new LocalRecDownload();
+       // localRecDownload=new LocalRecDownload();
         if (sd.getLoginStatus().equalsIgnoreCase("true")) {
             // Attempt to extract the "message" property from the payload: {"message":"Hello World!"}
             if (intent.getStringExtra("message") != null) {
@@ -96,21 +105,24 @@ public class PushReceiver extends BroadcastReceiver {
                     isread = customJson.getString("isread");
                     deliver = customJson.getString("deliver");
                     senderid = customJson.getString("senderid");
+
                     ChatUserList allPrdctData = new ChatUserList();
                     allPrdctData.setId(reciverid);
                     allPrdctData.setName(sname);
                     allPrdctData.setDescription(description);
                     allPrdctData.setLastMessage(message);
                     allPrdctData.setDatetime(datetime);
-                    allPrdctData.setIsOnline("false");
+                    allPrdctData.setUserstatus("false");
                     allPrdctData.setTime(timeConverter(datetime));
-                    allPrdctData.setImageUrl(image);
-                    allPrdctData.setType(dtype);
-                    allPrdctData.setData(message);
+                    allPrdctData.setPhoto(image);
+                    allPrdctData.setDtype(dtype);
+                    allPrdctData.setMessage(message);
                     allPrdctData.setChattype(chattype);
                     allPrdctData.setDid(did);
                     allPrdctData.setAdmin(admin);
-                    localDBHelper.insertChatList(allPrdctData);
+                    allPrdctData.setCount("0");
+                    allPrdctData.setMute("false");
+                    DBUtil.chatUserListInsert(context,allPrdctData);
 
                     Log.d("Message_per ", reciverid + " : " + dtype + sname + did + datetime + isread + deliver + senderid + message);
                     // }
@@ -121,29 +133,29 @@ public class PushReceiver extends BroadcastReceiver {
                     e.printStackTrace();
                 }
             }
-            try {
+       /*     try {
                 if (chattype.equalsIgnoreCase("group")&& !senderid.equals(sd.getKeyId())){
                     new LocalDBHelper(context).updateChatListLastmessage("group", reciverid,dtype,message, timeConverter(datetime),
                             datetime);
                     switch (dtype){
                         case "img":
-                            *//*localRecDownload.localRecDownloadMethod(message, LocalFileManager.image_folder_name,
-                                    dtype,uid,reciverid, context);*//*
+                            localRecDownload.localRecDownloadMethod(message, LocalFileManager.image_folder_name,
+                                    dtype,uid,reciverid, context);
                             new LocalDBHelper(context).insertGroupMessagesOffline(new JsonModelForChat(message, senderid, reciverid, Utils.dateConverter(datetime), isread, "", timeConverter(datetime), deliver, uid, message, dtype, "asdfa", uname, "", datetime, false, "false", "", message.substring(message.lastIndexOf(".")),thumb,0), reciverid);
                             break;
                         case "audio":
-                            *//*localRecDownload.localRecDownloadMethod(message, LocalFileManager.audio_folder_name,
-                                    dtype,uid,reciverid, context);*//*
+                            localRecDownload.localRecDownloadMethod(message, LocalFileManager.audio_folder_name,
+                                    dtype,uid,reciverid, context);
                             new LocalDBHelper(context).insertGroupMessagesOffline(new JsonModelForChat(message, senderid, reciverid, Utils.dateConverter(datetime), isread, "", timeConverter(datetime), deliver, uid, message, dtype, "asdfa", uname, "", datetime, false, "false", "", message.substring(message.lastIndexOf(".")),"",0), reciverid);
                             break;
                         case "video":
-                            *//*localRecDownload.localRecDownloadMethod(message, LocalFileManager.video_folder_name,
-                                    dtype,uid,reciverid, context);*//*
+                            localRecDownload.localRecDownloadMethod(message, LocalFileManager.video_folder_name,
+                                    dtype,uid,reciverid, context);
                             new LocalDBHelper(context).insertGroupMessagesOffline(new JsonModelForChat(message, senderid, reciverid, Utils.dateConverter(datetime), isread, "", timeConverter(datetime), deliver, uid, message, dtype, "asdfa", uname, "", datetime, false, "false", "", message.substring(message.lastIndexOf(".")),thumb,0), reciverid);
                             break;
                         case "pdf":
-                            *//*localRecDownload.localRecDownloadMethod(message, LocalFileManager.docs_folder_name,
-                                    dtype,uid,reciverid, context);*//*
+                            localRecDownload.localRecDownloadMethod(message, LocalFileManager.docs_folder_name,
+                                    dtype,uid,reciverid, context);
                             new LocalDBHelper(context).insertGroupMessagesOffline(new JsonModelForChat(message, senderid, reciverid, Utils.dateConverter(datetime), isread, "", timeConverter(datetime), deliver, uid, message, dtype, doc_name, uname, "", datetime, false, "false", "", message.substring(message.lastIndexOf(".")),"",0), reciverid);
                             break;
                         default:
@@ -155,23 +167,23 @@ public class PushReceiver extends BroadcastReceiver {
                             datetime);
                     switch (dtype){
                         case "img":
-                            *//*localRecDownload.localRecDownloadMethod(message, LocalFileManager.image_folder_name,
-                                    dtype,uid,reciverid, context);*//*
+                            localRecDownload.localRecDownloadMethod(message, LocalFileManager.image_folder_name,
+                                    dtype,uid,reciverid, context);
                             new LocalDBHelper(context).insertSingleMessagesOffline(new JsonModelForChat(message, senderid, reciverid, Utils.dateConverter(datetime), isread, "", timeConverter(datetime), deliver, uid, message, dtype, "asdfa", "asdfsda", "", datetime, false, "false", "", message.substring(message.lastIndexOf(".")),thumb,0), reciverid);
                             break;
                         case "audio":
-                            *//*localRecDownload.localRecDownloadMethod(message, LocalFileManager.audio_folder_name,
-                                    dtype,uid,reciverid, context);*//*
+                            localRecDownload.localRecDownloadMethod(message, LocalFileManager.audio_folder_name,
+                                    dtype,uid,reciverid, context);
                             new LocalDBHelper(context).insertSingleMessagesOffline(new JsonModelForChat(message, senderid, reciverid, Utils.dateConverter(datetime), isread, "", timeConverter(datetime), deliver, uid, message, dtype, "asdfa", "asdfsda", "", datetime, false, "false", "", message.substring(message.lastIndexOf(".")),"",0), reciverid);
                             break;
                         case "video":
-                            *//*localRecDownload.localRecDownloadMethod(message, LocalFileManager.video_folder_name,
-                                    dtype,uid,reciverid, context);*//*
+                            localRecDownload.localRecDownloadMethod(message, LocalFileManager.video_folder_name,
+                                    dtype,uid,reciverid, context);
                             new LocalDBHelper(context).insertSingleMessagesOffline(new JsonModelForChat(message, senderid, reciverid, Utils.dateConverter(datetime), isread, "", timeConverter(datetime), deliver, uid, message, dtype, "asdfa", "asdfsda", "", datetime, false, "false", "", message.substring(message.lastIndexOf(".")),thumb,0), reciverid);
                             break;
                         case "pdf":
-                            *//*localRecDownload.localRecDownloadMethod(message, LocalFileManager.docs_folder_name,
-                                    dtype,uid,reciverid, context);*//*
+                            localRecDownload.localRecDownloadMethod(message, LocalFileManager.docs_folder_name,
+                                    dtype,uid,reciverid, context);
                             new LocalDBHelper(context).insertSingleMessagesOffline(new JsonModelForChat(message, senderid, reciverid, Utils.dateConverter(datetime), isread, "", timeConverter(datetime), deliver, uid, message, dtype, doc_name, "asdfsda", "", datetime, false, "false", "", message.substring(message.lastIndexOf(".")),"",0), reciverid);
                             break;
                         default:
@@ -190,12 +202,13 @@ public class PushReceiver extends BroadcastReceiver {
                     }
                 }
 
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 e.printStackTrace();
                 Log.e("Notification_Expre", e.toString());
 
-            }
-        }*/
+            }*/
+        }
     }
 
     private void sendNotification(int id, String Name, String messageBody, Context context, String Type, String ChatType) {
@@ -219,17 +232,21 @@ public class PushReceiver extends BroadcastReceiver {
                 intent.putExtra("rid", senderid);
 *//*
                 intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-*//*
-            }
+*/
+        //    }
+        intent = new Intent(context, SingleChatActivity.class);
+        intent.putExtra("rid", senderid);
+        intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+
             intent.putExtra("name", Name);
             intent.putExtra("chattype", dtype);
             intent.putExtra("did", pusddid);
             intent.putExtra("mute", "false");
-            intent.putStringArrayListExtra("forwardString", new ArrayList<>());
+            intent.putStringArrayListExtra("forwardString", new ArrayList<String>());
 
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
                     PendingIntent.FLAG_UPDATE_CURRENT);
-      */      Bitmap bm = BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon);
+            Bitmap bm = BitmapFactory.decodeResource(context.getResources(), R.drawable.app_icon);
             if (Type.equalsIgnoreCase("msg")) {
                 Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
