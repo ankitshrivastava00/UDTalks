@@ -33,6 +33,7 @@ import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_DAT
 import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_DELIVER;
 import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_DID;
 import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_EXTENSION;
+import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_GRAVITY;
 import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_HEADING;
 import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_ID;
 import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_IMAGE;
@@ -56,6 +57,7 @@ import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_UPL
  */
 
 public class DBUtil {
+
     public DBUtil() {
 
     }
@@ -70,15 +72,35 @@ public class DBUtil {
      */
 
     public static List<SingleChatModule> fetchAllSingleChatList(Context context,SingleChatModule module) {
-        String[] FROM = {SINGLE_CHAT_ID, SINGLE_CHAT_SENDER_ID, SINGLE_CHAT_RECIEVER_ID, SINGLE_CHAT_DATETIME, SINGLE_CHAT_TIME, SINGLE_CHAT_DATE,
-                SINGLE_CHAT_MESSAGE,SINGLE_CHAT_ISREAD,SINGLE_CHAT_DELIVER,SINGLE_CHAT_TYPE,SINGLE_CHAT_RESPONSE,SINGLE_CHAT_HEADING,SINGLE_CHAT_ISSELECT
-        ,SINGLE_CHAT_STATUS,SINGLE_CHAT_UPLOADING,SINGLE_CHAT_DID,SINGLE_CHAT_IMAGE,SINGLE_CHAT_EXTENSION,SINGLE_CHAT_LIST_POSITION,SINGLE_CHAT_PARENT,SINGLE_CHAT_UID};
+
         SQLiteDatabase db = new DBData(context).getReadableDatabase();
         List<SingleChatModule> day = new ArrayList<SingleChatModule>();
         //Cursor cursor = db.query(SINGLE_CHAT_TABLE, FROM, null, null, null, null, SINGLE_CHAT_SENDER_ID);
-        Cursor cursor = db.rawQuery("SELECT * FROM " + SINGLE_CHAT_TABLE + " WHERE (( " +SINGLE_CHAT_RECIEVER_ID+ " = '"+ module.getSenderId() +"' AND " +SINGLE_CHAT_SENDER_ID+ " = '"+ new SessionManagement(context).getKeyId() + "' ) OR ( " +SINGLE_CHAT_SENDER_ID+ " = '"+ module.getSenderId() +"' AND " +SINGLE_CHAT_RECIEVER_ID+ " = '"+ new SessionManagement(context).getKeyId() + "' )) ", null);;
+        Cursor cursor = db.rawQuery("SELECT * FROM " + SINGLE_CHAT_TABLE + " WHERE (( " +SINGLE_CHAT_RECIEVER_ID+ " = '"+ module.getRecieverId() +"' AND " +SINGLE_CHAT_SENDER_ID+ " = '"+ new SessionManagement(context).getKeyId() + "' ) OR ( " +SINGLE_CHAT_SENDER_ID+ " = '"+ module.getRecieverId() +"' AND " +SINGLE_CHAT_RECIEVER_ID+ " = '"+ new SessionManagement(context).getKeyId() + "' )) ", null);;
         while (cursor.moveToNext()) {
             SingleChatModule temp = new SingleChatModule();
+            temp.setId(cursor.getString(0));
+            temp.setSenderId(cursor.getString(1));
+            temp.setRecieverId(cursor.getString(2));
+            temp.setDatetime(cursor.getString(3));
+            temp.setTime(cursor.getString(4));
+            temp.setDate(cursor.getString(5));
+            temp.setMessage(cursor.getString(6));
+            temp.setIsRead(cursor.getString(7));
+            temp.setDeliver(cursor.getString(8));
+            temp.setChatType(cursor.getString(9));
+            temp.setResponse(cursor.getString(10));
+            temp.setHeading(cursor.getString(11));
+            temp.setSelect(Boolean.parseBoolean(cursor.getString(12)));
+            temp.setChatStatus(cursor.getString(13));
+            temp.setChatUploading(cursor.getString(14));
+            temp.setDeviceId(cursor.getString(15));
+            temp.setChatImage(cursor.getString(16));
+            temp.setExtension(cursor.getString(17));
+            temp.setListPosition(cursor.getString(18));
+            temp.setParent(cursor.getString(19));
+            temp.setUid(cursor.getString(20));
+            temp.setGravitystatus(cursor.getString(21));
             day.add(temp);
         }
         cursor.close();
@@ -87,14 +109,60 @@ public class DBUtil {
     }
 
     public static SingleChatModule fetchSingleChatList(Context context, int id) {
-        String[] FROM = {SINGLE_CHAT_ID, SINGLE_CHAT_SENDER_ID, SINGLE_CHAT_RECIEVER_ID, SINGLE_CHAT_DATETIME, SINGLE_CHAT_TIME, SINGLE_CHAT_DATE,
-                SINGLE_CHAT_MESSAGE,SINGLE_CHAT_ISREAD,SINGLE_CHAT_DELIVER,SINGLE_CHAT_TYPE,SINGLE_CHAT_RESPONSE,SINGLE_CHAT_HEADING,SINGLE_CHAT_ISSELECT
-                ,SINGLE_CHAT_STATUS,SINGLE_CHAT_UPLOADING,SINGLE_CHAT_DID,SINGLE_CHAT_IMAGE,SINGLE_CHAT_EXTENSION,SINGLE_CHAT_LIST_POSITION,SINGLE_CHAT_PARENT,SINGLE_CHAT_UID};
+
+        String[] FROM = {
+                SINGLE_CHAT_ID,
+                SINGLE_CHAT_SENDER_ID,
+                SINGLE_CHAT_RECIEVER_ID,
+                SINGLE_CHAT_DATETIME,
+                SINGLE_CHAT_TIME,
+                SINGLE_CHAT_DATE,
+                SINGLE_CHAT_MESSAGE,
+                SINGLE_CHAT_ISREAD,
+                SINGLE_CHAT_DELIVER,
+                SINGLE_CHAT_TYPE,
+                SINGLE_CHAT_RESPONSE,
+                SINGLE_CHAT_HEADING,
+                SINGLE_CHAT_ISSELECT,
+                SINGLE_CHAT_STATUS,
+                SINGLE_CHAT_UPLOADING,
+                SINGLE_CHAT_DID,
+                SINGLE_CHAT_IMAGE,
+                SINGLE_CHAT_EXTENSION,
+                SINGLE_CHAT_LIST_POSITION,
+                SINGLE_CHAT_PARENT,
+                SINGLE_CHAT_UID,
+                SINGLE_CHAT_GRAVITY
+        };
+
         String where = SINGLE_CHAT_ID + "=" + id;
         SQLiteDatabase db = new DBData(context).getReadableDatabase();
         Cursor cursor = db.query(SINGLE_CHAT_TABLE, FROM, where, null, null, null, SINGLE_CHAT_SENDER_ID);
         cursor.moveToNext();
         SingleChatModule temp = new SingleChatModule();
+        temp.setId(cursor.getString(0));
+        temp.setSenderId(cursor.getString(1));
+        temp.setRecieverId(cursor.getString(2));
+        temp.setDatetime(cursor.getString(3));
+        temp.setTime(cursor.getString(4));
+        temp.setDate(cursor.getString(5));
+        temp.setMessage(cursor.getString(6));
+        temp.setIsRead(cursor.getString(7));
+        temp.setDeliver(cursor.getString(8));
+        temp.setChatType(cursor.getString(9));
+        temp.setResponse(cursor.getString(10));
+        temp.setHeading(cursor.getString(11));
+        temp.setSelect(Boolean.parseBoolean(cursor.getString(12)));
+        temp.setChatStatus(cursor.getString(13));
+        temp.setChatUploading(cursor.getString(14));
+        temp.setDeviceId(cursor.getString(15));
+        temp.setChatImage(cursor.getString(16));
+        temp.setExtension(cursor.getString(17));
+        temp.setListPosition(cursor.getString(18));
+        temp.setParent(cursor.getString(19));
+        temp.setUid(cursor.getString(20));
+        temp.setGravitystatus(cursor.getString(21));
+
         cursor.close();
         db.close();
         return temp;
@@ -116,7 +184,7 @@ public class DBUtil {
         values.put(SINGLE_CHAT_TYPE, model.getChatType());
         values.put(SINGLE_CHAT_RESPONSE, model.getResponse());
         values.put(SINGLE_CHAT_HEADING, model.getHeading());
-        values.put(SINGLE_CHAT_ISSELECT, model.getIsSelect());
+        values.put(SINGLE_CHAT_ISSELECT, model.isSelect());
         values.put(SINGLE_CHAT_STATUS, model.getChatStatus());
         values.put(SINGLE_CHAT_UPLOADING, model.getChatUploading());
         values.put(SINGLE_CHAT_DID, model.getDeviceId());
@@ -125,6 +193,7 @@ public class DBUtil {
         values.put(SINGLE_CHAT_LIST_POSITION, model.getListPosition());
         values.put(SINGLE_CHAT_PARENT, model.getParent());
         values.put(SINGLE_CHAT_UID, model.getUid());
+        values.put(SINGLE_CHAT_GRAVITY, model.getGravitystatus());
 
         long id = db.insertOrThrow(SINGLE_CHAT_TABLE, null, values);
         db.close();
@@ -134,13 +203,12 @@ public class DBUtil {
 
 
     public static List<ChatUserList> fetchAllChatList(Context context) {
-        String[] FROM = {CHAT_USER_ID, CHAT_USER_NAME, CHAT_USER_DESCRIPTION, CHAT_USER_LASTMESSAGE, CHAT_USER_DATETIME, CHAT_USER_TIME,
-                CHAT_USER_USERSTATUS,CHAT_USER_PHOTO,CHAT_USER_DTYPE,CHAT_USER_MESSAGE,CHAT_USER_CHATTYPE,CHAT_USER_DID,CHAT_USER_ADMIN,
-                CHAT_USER_LIST_COUNT,CHAT_USER_MUTE};
+
         SQLiteDatabase db = new DBData(context).getReadableDatabase();
         List<ChatUserList> day = new ArrayList<ChatUserList>();
         //Cursor cursor = db.query(CHAT_LIST_TABLE, FROM, null, null, null, null, SINGLE_NAME);
-        Cursor cursor = db.rawQuery("SELECT * FROM " + CHAT_LIST_TABLE + " " , null);;
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + CHAT_LIST_TABLE + " ORDER BY "+CHAT_USER_DATETIME+ " DESC" , null);;
         while (cursor.moveToNext()) {
             ChatUserList temp = new ChatUserList();
             temp.setId(cursor.getString(0));
@@ -164,7 +232,7 @@ public class DBUtil {
         db.close();
         return day;
     }
-
+/*
     public static ChatUserList fetchSingleUserChatList(Context context, int id) {
         String[] FROM = {CHAT_USER_ID, CHAT_USER_NAME, CHAT_USER_DESCRIPTION, CHAT_USER_LASTMESSAGE, CHAT_USER_DATETIME, CHAT_USER_TIME,
                 CHAT_USER_USERSTATUS,CHAT_USER_PHOTO,CHAT_USER_DTYPE,CHAT_USER_MESSAGE,CHAT_USER_CHATTYPE,CHAT_USER_DID,CHAT_USER_ADMIN,CHAT_USER_LIST_COUNT,CHAT_USER_MUTE};
@@ -192,13 +260,12 @@ public class DBUtil {
         cursor.close();
         db.close();
         return temp;
-    }
+    }*/
 
-    public static ChatUserList chatUserListInsert(Context context,ChatUserList model) {
+    public static void chatUserListInsert(Context context,ChatUserList model) {
 
         SQLiteDatabase db = new DBData(context).getWritableDatabase();
-        ChatUserList newType;
-        if (checkChatList(context,model.getId())){
+        if (checkChatList(context,model.getName())){
             ContentValues values = new ContentValues();
 
             values.put(CHAT_USER_LASTMESSAGE, model.getLastMessage());
@@ -209,14 +276,14 @@ public class DBUtil {
             values.put(CHAT_USER_MESSAGE, model.getMessage());
             values.put(CHAT_USER_CHATTYPE, model.getChattype());
             values.put(CHAT_USER_DID, model.getDid());
+//x            msqLiteDatabase.update(CHAT_LIST_TABLE, values, "id= '" + id + "' AND chattype = 'group'" , null);
 
-            long id = db.update(CHAT_LIST_TABLE, values,"'"+CHAT_USER_LASTMESSAGE+"' = '"+model.getId()+"'",null);
+            db.update(CHAT_LIST_TABLE, values," name= '"+model.getName()+"'",null);
             db.close();
-             newType = fetchSingleUserChatList(context, Integer.parseInt(model.getId()));
+           //  newType = fetchSingleUserChatList(context, Integer.parseInt(model.getId()));
         }else {
             ContentValues values = new ContentValues();
             //  values.put(SINGLE_ID, EmployeeId);
-
             values.put(CHAT_USER_ID, model.getId());
             values.put(CHAT_USER_NAME, model.getName());
             values.put(CHAT_USER_DESCRIPTION, model.getDescription());
@@ -232,12 +299,11 @@ public class DBUtil {
             values.put(CHAT_USER_ADMIN, model.getAdmin());
             values.put(CHAT_USER_LIST_COUNT, model.getCount());
 
-            long id = db.insertOrThrow(CHAT_LIST_TABLE, null, values);
+            db.insertOrThrow(CHAT_LIST_TABLE, null, values);
             db.close();
-             newType = fetchSingleUserChatList(context, (int) id);
+            // newType = fetchSingleUserChatList(context, (int) id);
         }
 
-        return newType;
     }
 
     public static void deleteChatListEmlopyee(Context context, int id) {
@@ -250,10 +316,10 @@ public class DBUtil {
 
     public static boolean checkChatList(Context context, String id) {
         // array of columns to fetch
-        String[] columns = {CHAT_USER_ID};
+        String[] columns = {CHAT_USER_NAME};
         SQLiteDatabase db = new DBData(context).getReadableDatabase();
         // selection criteria
-        String selection = CHAT_USER_ID + " = ?";
+        String selection = CHAT_USER_NAME + " = ?";
         // selection argument
         String[] selectionArgs = {id};
         // query user table with condition
@@ -276,6 +342,7 @@ public class DBUtil {
         if (cursorCount > 0) {
             return true;
         }
+
         return false;
     }
 

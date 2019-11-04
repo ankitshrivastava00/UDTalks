@@ -18,7 +18,6 @@ import java.util.Random;
 
 public class Utils {
 
-
     public static void downloadFile(Context context, String path, String fileName) {
         try {
             // String str = list.get(position).getPath() + list.get(position).getFile_name();
@@ -27,8 +26,7 @@ public class Utils {
             Uri source = Uri.parse(str);
             //  Uri source = Uri.parse(list1.get(position).getUrl() + list1.get(position).getFilename());
 
-            DownloadManager.Request request = new DownloadManager.Request(
-                    source);
+            DownloadManager.Request request = new DownloadManager.Request(source);
             request.setDescription("Description for the DownloadManager Bar");
 
             request.setTitle("Upload Download History: " + fileName);
@@ -44,7 +42,7 @@ public class Utils {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setAction(DownloadManager.ACTION_VIEW_DOWNLOADS);
             context.startActivity(intent);*/
-        } catch (Exception e) {
+         } catch (Exception e) {
             e.printStackTrace();
         }
 

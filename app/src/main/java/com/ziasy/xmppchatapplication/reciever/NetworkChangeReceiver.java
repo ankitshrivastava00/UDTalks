@@ -24,9 +24,11 @@ import static androidx.legacy.content.WakefulBroadcastReceiver.startWakefulServi
  */
 
 public class NetworkChangeReceiver extends BroadcastReceiver {
+
     ConnectionDetector cd;
     private Socket mSocket;
     SessionManagement sd;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         //context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory()+"UDTalks")));

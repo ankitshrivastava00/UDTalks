@@ -27,7 +27,6 @@ public interface DBConstants extends BaseColumns {
     public static final String CHAT_USER_LIST_COUNT = "count";
     public static final String CHAT_USER_MUTE = "mute";
 
-
     //SINGLE_CHAT_TABLE
     public static final String SINGLE_CHAT_TABLE = "single_chat";
     //columns in the entry table
@@ -52,6 +51,7 @@ public interface DBConstants extends BaseColumns {
     public static final String SINGLE_CHAT_LIST_POSITION = "SINGLE_CHAT_list_position";
     public static final String SINGLE_CHAT_PARENT = "SINGLE_CHAT_parent";
     public static final String SINGLE_CHAT_UID = "SINGLE_CHAT_UID";
+    public static final String SINGLE_CHAT_GRAVITY = "SINGLE_CHAT_gravity";
 
 
     //GROUP_CHAT_TABLE

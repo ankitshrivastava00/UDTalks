@@ -45,9 +45,6 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/search_inactive" />
 
-
-
-
             <ImageView
                 android:id="@+id/iv_add_user"
                 android:layout_width="25dp"

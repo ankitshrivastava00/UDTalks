@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.daimajia.swipe.SwipeLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.ziasy.xmppchatapplication.R;
+import com.ziasy.xmppchatapplication.callback.ScrollInterface;
 import com.ziasy.xmppchatapplication.common.Confiq;
 import com.ziasy.xmppchatapplication.common.ConnectionDetector;
 import com.ziasy.xmppchatapplication.common.Permission;
@@ -88,15 +89,30 @@ public class SingleChatAdapter extends RecyclerView.Adapter<SingleChatAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int position) {
+        final SingleChatModule message = (SingleChatModule) chatMessageList.get(position);
 
-        switch (message.getChatType()) {
+       if (message.getSenderId().equalsIgnoreCase(new SessionManagement(context).getKeyId())) {
+
+            viewHolder.outgoingTextImage.setText(message.getMessage());
+            viewHolder.outgoing_text_time.setText(message.getTime());
+            viewHolder.layout.setVisibility(View.VISIBLE);
+            viewHolder.parent_layout.setVisibility(View.GONE);
+           // scrollInterface.scroll();
+
         }
+        else {
+
+            viewHolder.layout.setVisibility(View.GONE);
+            viewHolder.parent_layout.setVisibility(View.VISIBLE);
+            viewHolder.incomming_text.setText(message.getMessage());
+            viewHolder.incoming_text_time.setText(message.getTime());
+           // scrollInterface.scroll();
+        }
+      /*  switch (message.getChatType()) {
 
 
-
-
-
-      /*  final SingleChatModule message = (SingleChatModule) chatMessageList.get(position);
+        }
+        *//*  final SingleChatModule message = (SingleChatModule) chatMessageList.get(position);
         sd = new SessionManagement(context);
         // Log.e("SELLELE",selected_usersList+"");
         if (selected_usersList.contains(chatMessageList.get(position))) {
@@ -1762,7 +1778,7 @@ public class SingleChatAdapter extends RecyclerView.Adapter<SingleChatAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return 26;
+        return chatMessageList.size();
     }
 
     private static String getFileSizeMegaBytes(String file) {
@@ -1822,7 +1838,6 @@ public class SingleChatAdapter extends RecyclerView.Adapter<SingleChatAdapter.Vi
             /*uploading image*/
             btnImageUpload=itemView.findViewById(R.id.btnImageUpload);
             outgoing_progress_bar=itemView.findViewById(R.id.outgoing_progress_bar);
-
 
             /*uploading video*/
             outgoing_video_progress_bar=itemView.findViewById(R.id.outgoing_video_progress_bar);

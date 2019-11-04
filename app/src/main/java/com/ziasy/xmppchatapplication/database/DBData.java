@@ -54,6 +54,7 @@ import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_DAT
 import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_DELIVER;
 import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_DID;
 import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_EXTENSION;
+import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_GRAVITY;
 import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_HEADING;
 import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_ID;
 import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_IMAGE;
@@ -84,7 +85,7 @@ public class DBData extends SQLiteOpenHelper {
     // SIINGLE_LIST_TABLE
     private static final String CREATE_CHAT_LIST_TABLE =
             "CREATE TABLE " + CHAT_LIST_TABLE + " ("
-                    + CHAT_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + CHAT_USER_ID + " INTEGER , "
                     + CHAT_USER_NAME + " TEXT,"
                     + CHAT_USER_DESCRIPTION + " TEXT,"
                     + CHAT_USER_LASTMESSAGE + " TEXT,"
@@ -102,7 +103,6 @@ public class DBData extends SQLiteOpenHelper {
                     + " );";
 
     //SINGLE_CHAT_TABLE
-
     private static final String CREATE_SINGLE_CHAT_TABLE =
             "CREATE TABLE " + SINGLE_CHAT_TABLE + " ("
                     + SINGLE_CHAT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -125,13 +125,12 @@ public class DBData extends SQLiteOpenHelper {
                     + SINGLE_CHAT_LIST_POSITION + " TEXT,"
                     + SINGLE_CHAT_IMAGE + " TEXT,"
                     + SINGLE_CHAT_PARENT + " TEXT,"
-                    + SINGLE_CHAT_UID + " TEXT"
+                    + SINGLE_CHAT_UID + " TEXT,"
+                    + SINGLE_CHAT_GRAVITY + " TEXT"
                     + " );";
 
 
     //GROUP_CHAT_TABLE
-
-
     private static final String CREATE_GROUP_CHAT_TABLE =
             "CREATE TABLE " + GROUP_CHAT_TABLE + " ("
                     + GROUP_CHAT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "

@@ -25,11 +25,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ziasy.xmppchatapplication.R;
 import com.ziasy.xmppchatapplication.adapter.ChatUserListAdapter;
+import com.ziasy.xmppchatapplication.common.ChatApplication;
 import com.ziasy.xmppchatapplication.common.CustomEditText;
 import com.ziasy.xmppchatapplication.common.Utils;
 import com.ziasy.xmppchatapplication.database.DBUtil;
 import com.ziasy.xmppchatapplication.listner.DrawableClickListener;
 import com.ziasy.xmppchatapplication.model.ChatUserList;
+import com.ziasy.xmppchatapplication.model.SingleChatModule;
+import com.ziasy.xmppchatapplication.reciever.PushReceiver;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,7 +44,7 @@ import me.pushy.sdk.Pushy;
  * Created by Khushvinders on 15-Nov-16.
  */
 
-public class ChatUserListActivity extends AppCompatActivity implements View.OnClickListener {
+public class ChatUserListActivity extends AppCompatActivity implements View.OnClickListener, PushReceiver.RecievingMessageInterface {
 
     private RecyclerView recyclerView;
     private ChatUserListAdapter adapter;
@@ -55,10 +58,12 @@ public class ChatUserListActivity extends AppCompatActivity implements View.OnCl
     private LinearLayout addGroup, addUserFromUD, addUserFromPhone, scanUser, searchLayout;
     private boolean clickStatus = true;
     private CustomEditText searchEt;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_list);
+
         toolbar = (Toolbar) findViewById(R.id.tb_chatlist);
         iv_tab_user = (ImageView) findViewById(R.id.iv_add_user);
         iv_search = (ImageView) findViewById(R.id.iv_search);
@@ -84,7 +89,7 @@ public class ChatUserListActivity extends AppCompatActivity implements View.OnCl
             ll_emoji.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
             //   tv_contacts_count.setText(users.size()+" Chat");
-        //    Collections.sort(users, ChatUserList.StuNameComparator);
+            //    Collections.sort(users, ChatUserList.StuNameComparator);
             adapter=new ChatUserListAdapter(ChatUserListActivity.this,chatUserLists);
             recyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
@@ -140,8 +145,6 @@ public class ChatUserListActivity extends AppCompatActivity implements View.OnCl
         });
 
         searchEt.setDrawableClickListener(new DrawableClickListener() {
-
-
             public void onClick(DrawablePosition target) {
                 switch (target) {
                     case RIGHT:
@@ -255,6 +258,45 @@ public class ChatUserListActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View view) {
+
+    }
+
+    @Override
+    public void getChatList(ChatUserList chatModule) {
+        ChatUserListActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                chatUserLists.clear();
+                chatUserLists.addAll(DBUtil.fetchAllChatList(ChatUserListActivity.this));
+                if (chatUserLists.size() == 0) {
+                    ll_emoji.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                    //  tv_contacts_count.setText(users.size()+" Chat");
+                } else {
+                    ll_emoji.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    //   tv_contacts_count.setText(users.size()+" Chat");
+                    //    Collections.sort(users, ChatUserList.StuNameComparator);
+                    adapter=new ChatUserListAdapter(ChatUserListActivity.this,chatUserLists);
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                }
+
+            }
+
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // register connection status listener
+        ChatApplication.getInstance().setConnectivityListener(this);
+    }
+    @Override
+    public void getSingleChat(SingleChatModule chatModule) {
 
     }
 }

@@ -30,42 +30,75 @@ import org.json.JSONObject;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
 import com.ziasy.xmppchatapplication.R;
-import com.ziasy.xmppchatapplication.callback.SingleChatInterface;
+import com.ziasy.xmppchatapplication.common.ConnectionDetector;
 import com.ziasy.xmppchatapplication.common.SessionManagement;
 import com.ziasy.xmppchatapplication.database.DBUtil;
 import com.ziasy.xmppchatapplication.model.ChatUserList;
+import com.ziasy.xmppchatapplication.model.SingleChatModule;
 import com.ziasy.xmppchatapplication.single_chat.activity.SingleChatActivity;
 
+import static com.ziasy.xmppchatapplication.common.Utils.dateConverter;
+import static com.ziasy.xmppchatapplication.common.Utils.getSaltString;
 import static com.ziasy.xmppchatapplication.common.Utils.timeConverter;
 
 public class PushReceiver extends BroadcastReceiver {
+
     private String pusddid = null,reciverid = null,uid = null, image = null, description = null, admin = null, chattype = null, message = null, dtype = null, senderid = null, isread = null, deliver = null,
-            sname = null, did = null, datetime = null, doc_name=null, uname= null;
+            sname = null, did = null, datetime = null, doc_name=null, uname= null,not="";
+    // ScrollInterface singleChatInterface;
+    ConnectionDetector cd;
+
+
+    private  String receiverid="",textmessage="",messagetype="",
+            sendername="",senderdevid="",receiverdevid="",ismsgread="",
+            deliever="",sender_id="",chat_type="",receiver_name="";
+
+
+
     SessionManagement sd;
     Intent intent;
-   // private LocalRecDownload localRecDownload;
+    // private LocalRecDownload localRecDownload;
     String thumb=null;
-  //  LocalDBHelper localDBHelper;
-    private SingleChatInterface singleChatInterface;
+    //  LocalDBHelper localDBHelper;
+    public static   RecievingMessageInterface singleChatInterface;
+    /*    public PushReceiver() {
+            singleChatInterface = ;
+        }*/
     @Override
     public void onReceive(Context context, Intent intent) {
-        this.singleChatInterface= (SingleChatInterface) context;
+
+        //   this.singleChatInterface= (ScrollInterface) context;
         /*Intent intent1= new Intent(context, SendDataService.class);
         context.startService(intent1);*/
         String notificationTitle = "MyApp";
         String notificationText = "Test notification";
         sd = new SessionManagement(context);
-       // localDBHelper= new LocalDBHelper(context);
+        cd = new ConnectionDetector(context);
+        not = intent.getStringExtra("message");
+        //this.singleChatInterface = (ScrollInterface)context;
+
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = df.format(c.getTime());
+        String time = timeConverter(formattedDate);
+        String date = dateConverter(formattedDate);
+        String mid= getSaltString();
+
+        // localDBHelper= new LocalDBHelper(context);
         //new LocalDBHelper(context).callOnCreate();
-       // localRecDownload=new LocalRecDownload();
+        // localRecDownload=new LocalRecDownload();
         if (sd.getLoginStatus().equalsIgnoreCase("true")) {
             // Attempt to extract the "message" property from the payload: {"message":"Hello World!"}
             if (intent.getStringExtra("message") != null) {
                 notificationText = intent.getStringExtra("message");
             }
-            // Log.e("MessageseartsertBody", notificationText.toString());
+            Log.e("MessageseartsertBody", notificationText.toString());
             if (!TextUtils.isEmpty(notificationText)) {
                 JSONObject customJson = null;
 //                Log.d("JDONVJDBDFD",customJson.toString());
@@ -73,24 +106,81 @@ public class PushReceiver extends BroadcastReceiver {
                     customJson = new JSONObject(notificationText);
                     Log.d("JDONVJDBDFD",customJson.toString());
                     //  if (!customJson.isNull("obj")) {
-                    image = customJson.optString("image");
-                    description = customJson.optString("description");
-                    admin = customJson.optString("admin");
-                    chattype = customJson.optString("chattype");
-                    reciverid = customJson.optString("reciverid");
-                    pusddid = customJson.optString("pusddid");
-                    uid = customJson.optString("uid");
-                    doc_name = customJson.optString("doc_name");
+                    receiverid = customJson.optString("reciverid");
+                    textmessage = customJson.optString("message");
+                    messagetype = customJson.optString("dtype");
+                    sendername = customJson.optString("sname");
+                    receiverdevid = customJson.optString("did");
+                    senderdevid = customJson.optString("pusddid");
+                    ismsgread = customJson.optString("isread");
+                    deliever = customJson.optString("deliver");
+                    sender_id = customJson.optString("senderid");
                     //thumbnail
-                    dtype = customJson.getString("dtype");
+                    chat_type = customJson.getString("chattype");
+                    receiver_name = customJson.getString("receivername");
 
-                    if (dtype.equalsIgnoreCase("img")|| dtype.equalsIgnoreCase("video")){
+                    if (new SessionManagement(context).getKeyId().equalsIgnoreCase(receiverid)) {
+                        SingleChatModule singleChatModule = new SingleChatModule();
+                        singleChatModule.setSenderId(sender_id);
+                        singleChatModule.setRecieverId(receiverid);
+                        singleChatModule.setDatetime(formattedDate.toString());
+                        singleChatModule.setTime(time);
+                        singleChatModule.setDate(date);
+                        singleChatModule.setMessage(textmessage);
+                        singleChatModule.setIsRead(ismsgread);
+                        singleChatModule.setDeliver(deliever);
+                        singleChatModule.setChatType(chat_type);
+                        singleChatModule.setResponse("");
+                        singleChatModule.setHeading(sendername);
+                        singleChatModule.setSelect(true);
+                        singleChatModule.setChatStatus("");
+                        singleChatModule.setChatUploading("");
+                        singleChatModule.setDeviceId(senderdevid);
+                        singleChatModule.setChatImage("");
+                        singleChatModule.setExtension("");
+                        singleChatModule.setListPosition("");
+                        singleChatModule.setParent("");
+                        singleChatModule.setGravitystatus("online");   // for online
+                        singleChatModule.setUid(mid);
+                        DBUtil.singleChatInsert(context, singleChatModule);
+
+                        ChatUserList allPrdctData = new ChatUserList();
+                        allPrdctData.setId(sender_id);
+                        allPrdctData.setName(sendername);
+                        allPrdctData.setDescription("");
+                        allPrdctData.setLastMessage(textmessage);
+                        allPrdctData.setDatetime(formattedDate);
+                        allPrdctData.setUserstatus("false");
+                        allPrdctData.setTime(time);
+                        allPrdctData.setPhoto("");
+                        allPrdctData.setDtype("");
+                        allPrdctData.setChattype("");
+                        allPrdctData.setChattype("indivisual");
+                        allPrdctData.setDid(senderdevid);
+                        allPrdctData.setAdmin("");
+                        allPrdctData.setMute("false");
+                        DBUtil.chatUserListInsert(context, allPrdctData);
+                        sendNotification(0, sendername, textmessage, context, messagetype, chat_type);
+
+                        if (singleChatModule != null) {
+                            singleChatInterface.getChatList(allPrdctData);
+                            singleChatInterface.getSingleChat(singleChatModule);
+                        }
+
+                        Log.d("Message_per ", reciverid + " : " + dtype + sname + did + datetime + isread + deliver + senderid + message);
+                    }
+                    //  Toast.makeText(context,"fdnvjnb",Toast.LENGTH_SHORT).show();
+
+
+                  /*  if (dtype.equalsIgnoreCase("img")||
+                        dtype.equalsIgnoreCase("video")){
                         thumb=customJson.getString("thumbnail");
                     }
 
                     if (thumb== null){
                         thumb="";
                     }
+
                     message = customJson.getString("message");
                     if (chattype.equalsIgnoreCase("group")){
                         sname=customJson.getString("g_name");
@@ -105,26 +195,7 @@ public class PushReceiver extends BroadcastReceiver {
                     isread = customJson.getString("isread");
                     deliver = customJson.getString("deliver");
                     senderid = customJson.getString("senderid");
-
-                    ChatUserList allPrdctData = new ChatUserList();
-                    allPrdctData.setId(reciverid);
-                    allPrdctData.setName(sname);
-                    allPrdctData.setDescription(description);
-                    allPrdctData.setLastMessage(message);
-                    allPrdctData.setDatetime(datetime);
-                    allPrdctData.setUserstatus("false");
-                    allPrdctData.setTime(timeConverter(datetime));
-                    allPrdctData.setPhoto(image);
-                    allPrdctData.setDtype(dtype);
-                    allPrdctData.setMessage(message);
-                    allPrdctData.setChattype(chattype);
-                    allPrdctData.setDid(did);
-                    allPrdctData.setAdmin(admin);
-                    allPrdctData.setCount("0");
-                    allPrdctData.setMute("false");
-                    DBUtil.chatUserListInsert(context,allPrdctData);
-
-                    Log.d("Message_per ", reciverid + " : " + dtype + sname + did + datetime + isread + deliver + senderid + message);
+*/
                     // }
 
                 } catch (JSONException e) {
@@ -233,10 +304,12 @@ public class PushReceiver extends BroadcastReceiver {
 *//*
                 intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
 */
-        //    }
-        intent = new Intent(context, SingleChatActivity.class);
-        intent.putExtra("rid", senderid);
-        intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            //    }
+
+
+            intent = new Intent(context, SingleChatActivity.class);
+            intent.putExtra("rid", senderid);
+            intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
 
             intent.putExtra("name", Name);
             intent.putExtra("chattype", dtype);
@@ -257,8 +330,8 @@ public class PushReceiver extends BroadcastReceiver {
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
                         .setLargeIcon(bm)
                         .setAutoCancel(true)
-                        .setSound(defaultSoundUri)
-                      ;//  .setContentIntent(pendingIntent);
+                        .setSound(defaultSoundUri);
+                        //.setContentIntent(pendingIntent);
 
                 NotificationManager notificationManager =
                         (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -323,7 +396,7 @@ public class PushReceiver extends BroadcastReceiver {
                         .setLargeIcon(bm)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
-                       ;// .setContentIntent(pendingIntent);
+                        ;// .setContentIntent(pendingIntent);
                 NotificationManager notificationManager =
                         (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.notify(id, notificationBuilder.build());
@@ -339,7 +412,7 @@ public class PushReceiver extends BroadcastReceiver {
                         .setLargeIcon(bm)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
-                       ;// .setContentIntent(pendingIntent);
+                        ;// .setContentIntent(pendingIntent);
 
                 NotificationManager notificationManager =
                         (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -407,5 +480,9 @@ public class PushReceiver extends BroadcastReceiver {
         }
     }
 
+    public interface RecievingMessageInterface{
+        void getChatList(ChatUserList chatModule);
+        void getSingleChat(SingleChatModule chatModule);
+    }
 
 }

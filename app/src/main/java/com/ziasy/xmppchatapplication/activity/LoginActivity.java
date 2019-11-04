@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (sd.getUserFcmId() == null || sd.getUserFcmId().equalsIgnoreCase("USER_FCM_ID")) {
                         // Register with Pushy
                         new RegisterForPushNotificationsAsync().execute();
-                    }
+                     }
                     else {
                         // Start Pushy notification service if not already running
                         Pushy.listen(LoginActivity.this);
@@ -231,7 +231,6 @@ pd.show();
                                         finish();
 
                                     } else {
-
                                         sd.setUserName(name);
                                         sd.setKeyId(eid);
                                         sd.setUserMobile(number);

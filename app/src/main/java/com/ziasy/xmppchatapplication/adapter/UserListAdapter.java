@@ -89,11 +89,11 @@ public class UserListAdapter extends BaseAdapter {
         });
 
         if (position % 2 == 0) {
-
             viewHolder.view_career.setBackgroundColor(ContextCompat.getColor(context, R.color.orange));
         } else {
             viewHolder.view_career.setBackgroundColor(ContextCompat.getColor(context, R.color.ud_blue));
         }
+
         viewHolder.ll_view_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,34 +115,38 @@ public class UserListAdapter extends BaseAdapter {
         viewHolder.view_add_new_user.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(context, SingleChatActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                i.putExtra("mute", "false");
-                i.putExtra("name",list.get(position).getName());
-                i.putExtra("rid",list.get(position).getId());
-                i.putExtra("chattype", "indivisual");
-                i.putExtra("did", list.get(position).getDid());
-                i.putStringArrayListExtra("forwardString",new ArrayList<String>());
-                i.putExtra("type", "");
-                context.startActivity(i);
-                ((Activity)context).finish();
-                ChatUserList allPrdctData = new ChatUserList();
-                allPrdctData.setId(list.get(position).getId());
-                allPrdctData.setName(list.get(position).getName());
-                allPrdctData.setDescription("");
-                allPrdctData.setLastMessage("");
-                allPrdctData.setDatetime("");
-                allPrdctData.setUserstatus("false");
-                allPrdctData.setTime("");
-                allPrdctData.setPhoto(list.get(position).getImageUrl());
-                allPrdctData.setDtype("");
-                allPrdctData.setChattype("");
-                allPrdctData.setChattype("indivisual");
-                allPrdctData.setDid(list.get(position).getDid());
-                allPrdctData.setAdmin("");
-                allPrdctData.setMute("false");
-                DBUtil.chatUserListInsert(context,allPrdctData);
+                try {
+                    Intent i = new Intent(context, SingleChatActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    i.putExtra("mute", "false");
+                    i.putExtra("name", list.get(position).getName());
+                    i.putExtra("rid", list.get(position).getId());
+                    i.putExtra("chattype", "indivisual");
+                    i.putExtra("did", list.get(position).getDid());
+                    i.putStringArrayListExtra("forwardString", new ArrayList<String>());
+                    i.putExtra("type", "");
+                    context.startActivity(i);
+                    ((Activity) context).finish();
+                   /* ChatUserList allPrdctData = new ChatUserList();
+                    allPrdctData.setId(list.get(position).getId());
+                    allPrdctData.setName(list.get(position).getName());
+                    allPrdctData.setDescription("");
+                    allPrdctData.setLastMessage("");
+                    allPrdctData.setDatetime("");
+                    allPrdctData.setUserstatus("false");
+                    allPrdctData.setTime("");
+                    allPrdctData.setPhoto(list.get(position).getImageUrl());
+                    allPrdctData.setDtype("");
+                    allPrdctData.setChattype("");
+                    allPrdctData.setChattype("indivisual");
+                    allPrdctData.setDid(list.get(position).getDid());
+                    allPrdctData.setAdmin("");
+                    allPrdctData.setMute("false");
+                    DBUtil.chatUserListInsert(context, allPrdctData);*/
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
 

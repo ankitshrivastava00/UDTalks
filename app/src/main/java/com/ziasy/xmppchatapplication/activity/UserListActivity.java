@@ -44,8 +44,8 @@ import java.util.List;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
-
 public class UserListActivity extends AppCompatActivity implements OnClickListener {
+
     private RequestQueue requestQueue;
     private UserListAdapter adapter;
     private List<User> users;
@@ -58,7 +58,6 @@ public class UserListActivity extends AppCompatActivity implements OnClickListen
     private Socket mSocket;
     private ImageView iv_back;
     private CustomEditText searchEt;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -170,7 +169,6 @@ public class UserListActivity extends AppCompatActivity implements OnClickListen
                     .show();
         } else {
             if (mSocket!=null){
-
                 mSocket.connect();
             JsonObject jsonObject1 = new JsonObject();
             jsonObject1.addProperty("senderid", sd.getKeyId());
@@ -184,8 +182,9 @@ public class UserListActivity extends AppCompatActivity implements OnClickListen
 
             mSocket.emit("userid", jsonObject);
         }
+      }
     }
-    }
+
     private Emitter.Listener onSendMyMessage = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {

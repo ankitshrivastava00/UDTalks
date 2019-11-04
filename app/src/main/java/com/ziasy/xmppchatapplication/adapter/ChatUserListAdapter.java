@@ -209,7 +209,7 @@ public class ChatUserListAdapter extends RecyclerView.Adapter<ChatUserListAdapte
 
         viewHolder.userName.setText(list.get(position).getName());
 
-        viewHolder.msgtText.setText(list.get(position).getLastMessage());
+         viewHolder.msgtText.setText(list.get(position).getLastMessage());
 
     }
 

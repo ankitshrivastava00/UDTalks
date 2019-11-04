@@ -15,6 +15,22 @@
         android:orientation="horizontal"
         android:visibility="visible"
         android:weightSum="1">
+        <ImageView
+            android:id="@+id/imageBack"
+            android:layout_width="@dimen/margin_25dp"
+            android:layout_height="@dimen/margin_25dp"
+            android:layout_gravity="center"
+
+            android:scaleType="centerInside"
+            android:src="@drawable/back_arrow" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/chatProfilePic"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight=".17"
+            android:src="@drawable/profile_place_holder" />
 
         <RelativeLayout
             android:id="@+id/chatName"
@@ -75,11 +91,28 @@
                             android:textSize="12sp"
                             android:visibility="gone" />-->
         </RelativeLayout>
+        <ImageView
+            android:id="@+id/attachmentBtn"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/margin_25dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_weight=".15"
+            android:scaleType="centerInside"
+            android:src="@drawable/menu_inactive" />
 
+        <ImageView
+            android:id="@+id/settingIv"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/margin_25dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_weight=".15"
+            android:scaleType="centerInside"
+            android:src="@drawable/setting_inactive" />
     </LinearLayout>
 
 
 
 
 </androidx.appcompat.widget.Toolbar>
+
 

@@ -6,6 +6,8 @@ package com.ziasy.xmppchatapplication.common;
 
 import android.app.Application;
 
+import com.ziasy.xmppchatapplication.reciever.PushReceiver;
+
 import java.net.URISyntaxException;
 
 import io.socket.client.IO;
@@ -14,6 +16,23 @@ import io.socket.client.Socket;
 //import com.splunk.mint.Mint;
 
 public class ChatApplication extends Application {
+
+    private static ChatApplication mInstance;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        mInstance = this;
+    }
+
+    public static synchronized ChatApplication getInstance() {
+        return mInstance;
+    }
+
+    public void setConnectivityListener(PushReceiver.RecievingMessageInterface listener) {
+        PushReceiver.singleChatInterface = listener;
+    }
 
     private Socket mSocket;
     {
@@ -24,18 +43,9 @@ public class ChatApplication extends Application {
         }
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-      //  Mint.initAndStartSession(this, "fbfacc1b");
-        // TODO: Update with your HEC token
-        // Mint.initAndStartSessionHEC(this.getApplication(), "MINT_HEC_URL", "YOUR_HEC_TOKEN");
-
-      //  Mint.enableDebugLog();
-
-    }
 
     public Socket getSocket() {
         return mSocket;
     }
+
 }

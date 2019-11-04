@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.ziasy.xmppchatapplication.R;
+import com.ziasy.xmppchatapplication.common.ChatApplication;
 import com.ziasy.xmppchatapplication.common.SessionManagement;
 
 import static android.Manifest.permission.READ_PHONE_STATE;
@@ -144,6 +145,5 @@ public class SplashScreen extends Activity {
             }
         }, TIME);
     }
-
 
 }

@@ -1,6 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
@@ -57,5 +61,10 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation "com.daimajia.swipelayout:library:1.2.0@aar"
     implementation 'com.devlomi.record-view:record-view:2.0.1'
+
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:7.3.2'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-places-v7:0.8.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.36.0'
+
 //    implementation 'com.splunk:mint-android-sdk:5.2.5'
 }

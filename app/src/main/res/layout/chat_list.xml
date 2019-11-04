@@ -5,8 +5,7 @@
     android:background="#FFF"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_chatlist"
-        />
+    <include layout="@layout/toolbar_chatlist" />
 
 
     <LinearLayout
@@ -27,7 +26,6 @@
             android:background="@drawable/rounded_edit_text_home"
             android:cursorVisible="true"
             android:drawableRight="@drawable/cancel"
-
             android:hint="Enter keyword to search"
             android:imeOptions="actionSearch"
             android:paddingLeft="8dp"
@@ -37,8 +35,9 @@
             android:textColorHint="@color/white"
             android:textSize="14sp" />
     </LinearLayout>
-    <LinearLayout
 
+
+    <LinearLayout
         android:id="@+id/userLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

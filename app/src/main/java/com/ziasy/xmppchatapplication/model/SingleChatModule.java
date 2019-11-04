@@ -1,6 +1,7 @@
 package com.ziasy.xmppchatapplication.model;
 
 public class SingleChatModule {
+
     String Id;
     String SenderId;
     String RecieverId;
@@ -22,6 +23,16 @@ public class SingleChatModule {
     String ListPosition;
     String Parent;
     String Uid;
+    String gravitystatus;
+
+
+    public String getGravitystatus() {
+        return gravitystatus;
+    }
+
+    public void setGravitystatus(String gravitystatus) {
+        this.gravitystatus = gravitystatus;
+    }
 
     public boolean isSelect() {
         return IsSelect;

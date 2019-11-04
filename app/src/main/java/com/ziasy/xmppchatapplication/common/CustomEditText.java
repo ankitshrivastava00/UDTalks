@@ -35,7 +35,6 @@ public class CustomEditText extends EditText {
 
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
     }
 
     @Override
