@@ -119,8 +119,7 @@
      <activity android:name=".mapbox.MapBoxCurrentLocation"
          android:configChanges="orientation|screenSize"
          android:screenOrientation="portrait"
-         android:theme="@style/AppTheme">
-            ></activity>
+         android:theme="@style/AppTheme"></activity>
         <activity android:name=".activity.UserListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"
