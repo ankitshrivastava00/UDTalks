@@ -86,8 +86,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 strEmail = edtMobile.getText().toString().toLowerCase().trim();
 
-                if (strEmail.equalsIgnoreCase("") || strEmail.length()!=10) {
-                    edtMobile.setError("Please Enter Mobile Number Of 10 Digits");
+                if (strEmail.equalsIgnoreCase("") || strEmail.length()!=11) {
+                    edtMobile.setError("Please Enter Mobile Number Of 11 Digits");
                 } /*else if (strEmail.length()!=10) {
                     edtMobile.setError("Please Enter 10 Digit Number");
                 }*/ else {

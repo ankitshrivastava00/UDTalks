@@ -306,12 +306,22 @@ public class DBUtil {
 
     }
 
-    public static void deleteChatListEmlopyee(Context context, int id) {
 
-       /* SQLiteDatabase db = new DBData(context).getWritableDatabase();
-        String where = SINGLE_CHAT_ID + "=" + id;
-        db.delete(SINGLE_LIST_TABLE, where, null);
-        db.close();*/
+    public static void deleteSingleChatAll(Context context, int reciverId,int senderId,String name) {
+
+
+        SQLiteDatabase db = new DBData(context).getWritableDatabase();
+        String where = " " +SINGLE_CHAT_RECIEVER_ID+ " = '"+ reciverId +"' AND " +SINGLE_CHAT_SENDER_ID+ " = '"+ senderId + "' OR " +SINGLE_CHAT_SENDER_ID+ " = '"+ reciverId +"' AND " +SINGLE_CHAT_RECIEVER_ID+ " = '"+ senderId + "'";
+        db.delete(SINGLE_CHAT_TABLE, where, null);
+
+
+        ContentValues values = new ContentValues();
+
+        values.put(CHAT_USER_LASTMESSAGE, "");
+//x            msqLiteDatabase.update(CHAT_LIST_TABLE, values, "id= '" + id + "' AND chattype = 'group'" , null);
+
+        db.update(CHAT_LIST_TABLE, values," name= '"+name+"'",null);
+        db.close();
     }
 
     public static boolean checkChatList(Context context, String id) {

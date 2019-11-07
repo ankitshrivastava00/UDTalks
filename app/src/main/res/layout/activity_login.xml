@@ -78,7 +78,7 @@
                     android:paddingLeft="10dp"
                     android:textColorHint="#FFF"
                     android:layout_gravity="center"
-                    android:maxLength="10"
+                    android:maxLength="11"
                     android:textColor="@color/white"
                     android:layout_marginLeft="@dimen/dime_10dp"
                     android:layout_marginRight="@dimen/dime_10dp"

@@ -60,7 +60,7 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
         private LocationComponent locationComponent;
         // variables for calculating and drawing a route
         private DirectionsRoute currentRoute;
-        private static final String TAG = "DirectionsActivity";
+        private static final String TAG = "MapBoxActivity";
         private NavigationMapRoute navigationMapRoute;
         // variables needed to initialize navigation
         private Button button;

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
+    xmlns:mapbox="http://schemas.android.com/tools"
     android:id="@+id/outgoing_location_relative"
     android:orientation="vertical">
 
@@ -17,15 +18,6 @@
         android:background="@drawable/sender_bubble"
         android:orientation="vertical">
 
-       <!-- <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/outgoing_map_image_IV"
-            android:layout_width="match_parent"
-            app:riv_corner_radius="15dip"
-
-            android:layout_height="150dp"
-            android:background="@drawable/fake_mapmin" />
-
-  -->
 
         <com.makeramen.roundedimageview.RoundedImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -41,6 +33,17 @@
             app:riv_mutate_background="true"
             app:riv_oval="false"
             />
+<!--
+
+
+        <com.mapbox.mapboxsdk.maps.MapView
+            android:id="@+id/outgoingmapView"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            mapbox:mapbox_cameraTargetLat="38.9098"
+            mapbox:mapbox_cameraTargetLng="-77.0295"
+            mapbox:mapbox_cameraZoom="12" />
+-->
 
         <TextView
             android:id="@+id/outgoing_location_address"

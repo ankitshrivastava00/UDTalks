@@ -1,16 +1,22 @@
 package com.ziasy.xmppchatapplication.single_chat.activity;
 
+import android.app.Activity;
+import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.content.Intent;
+import android.content.OperationApplicationException;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.RemoteException;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,19 +43,28 @@ import com.devlomi.record_view.RecordButton;
 import com.devlomi.record_view.RecordView;
 import com.google.gson.JsonObject;
 import com.ziasy.xmppchatapplication.R;
+import com.ziasy.xmppchatapplication.activity.CareerContactListActivity;
 import com.ziasy.xmppchatapplication.activity.ChatUserListActivity;
+import com.ziasy.xmppchatapplication.activity.WallpaperActivity;
 import com.ziasy.xmppchatapplication.common.ChatApplication;
 import com.ziasy.xmppchatapplication.common.ConnectionDetector;
+import com.ziasy.xmppchatapplication.common.CustomEditText;
 import com.ziasy.xmppchatapplication.common.Permission;
 import com.ziasy.xmppchatapplication.common.SessionManagement;
 import com.ziasy.xmppchatapplication.database.DBUtil;
+import com.ziasy.xmppchatapplication.listner.DrawableClickListener;
 import com.ziasy.xmppchatapplication.mapbox.MapBoxCurrentLocation;
 import com.ziasy.xmppchatapplication.model.ChatUserList;
+import com.ziasy.xmppchatapplication.model.JsonModelForChat;
 import com.ziasy.xmppchatapplication.model.SingleChatModule;
 import com.ziasy.xmppchatapplication.multiimage.activities.AlbumSelectActivity;
 import com.ziasy.xmppchatapplication.multiimage.helpers.Constants;
 import com.ziasy.xmppchatapplication.reciever.PushReceiver;
 import com.ziasy.xmppchatapplication.single_chat.adapter.SingleChatAdapter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,39 +72,43 @@ import java.util.Calendar;
 import java.util.List;
 
 import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 import static com.ziasy.xmppchatapplication.common.Utils.dateConverter;
 import static com.ziasy.xmppchatapplication.common.Utils.getSaltString;
 import static com.ziasy.xmppchatapplication.common.Utils.timeConverter;
 
 public class SingleChatActivity extends AppCompatActivity implements View.OnClickListener,  PushReceiver.RecievingMessageInterface {
-
+    private boolean mTyping = false;
+    private static final int TYPING_TIMER_LENGTH = 600;
     // PopLayoutForAddAttachment
     private LinearLayout SellPost, BuyPost, MomentPick, ImageUpload, TakePicture, Video, TakeVideo, MediaTools, Location, ContactInfo, FileUpload, AudioFile;
     //PopLayoutForChatSetting
-    private LinearLayout clearChatLinear, addContactLinear, searchLinear, mediaLinear, notificationLinear, wallpaperLinear;
+    private LinearLayout searchLayout,clearChatLinear, addContactLinear, searchLinear, mediaLinear, notificationLinear, wallpaperLinear;
     private List<SingleChatModule>list;
     private SingleChatAdapter adapter;
+    private ImageView backImg;
+    private CustomEditText searchEt;
+    private Handler mTypingHandler = new Handler();
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private String receiverId, receiverName,did;
-    private TextView txt_name, txt_online_status, typingStatus;
+    private TextView txt_name,cancelSearch, txt_online_status, typingStatus;
     private RecordButton recordButton;
     private RecordView recordView;
     private LinearLayout hideEditText;
     private ConnectionDetector cd;
     private SessionManagement sd;
     private EditText msg_edittext;
-    private boolean mTyping = false;
     private static Socket mSocket;
     private LinearLayoutManager layoutManager;
     private ImageView smileyBtn, ImageAttachment, ImageSetting, imageBack, sendButton, sendVoiceRecording;
     private PopupWindow popupWindow, popupWindowForSetting;
-    private boolean GpsStatus ;
+    public boolean GpsStatus ;
     private LocationManager locationManager ;
+    private static final int MY_PERMISSIONS_CONTACT_SHARE = 205;
     private static final int REQUEST_CODE_AUTOCOMPLETE = 170;
-
-
+    private static final String TAG = "SingleChatActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,7 +120,11 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
         receiverId = getIntent().getStringExtra("rid");
         receiverName = getIntent().getStringExtra("name");
         did=getIntent().getStringExtra("did");
+        searchLayout = (LinearLayout) findViewById(R.id.searchLayout);
 
+        cancelSearch = (TextView) findViewById(R.id.cancelSearch);
+        searchEt = (CustomEditText) findViewById(R.id.searchEt);
+        backImg = (ImageView) findViewById(R.id.backImg);
         txt_name = (TextView) findViewById(R.id.nameTv);
         txt_name.setText(receiverName);
         recyclerView=(RecyclerView)findViewById(R.id.recyclerId);
@@ -112,16 +135,62 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
         imageBack = (ImageView) findViewById(R.id.imageBack);
         ImageSetting = (ImageView) findViewById(R.id.settingIv);
         msg_edittext = (EditText) findViewById(R.id.msgEditText);
+
+        txt_online_status = (TextView) findViewById(R.id.statusTv);
+        typingStatus = (TextView) findViewById(R.id.typingStatus);
+
         imageBack.setOnClickListener(this);
         sendButton.setOnClickListener(this);
         cd=new ConnectionDetector(SingleChatActivity.this);
         sd=new SessionManagement(SingleChatActivity.this);
         scrollTodown();
 
+        cancelSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchLayout.setVisibility(View.GONE);
+                searchEt.setText("");
+                if (TextUtils.isEmpty(searchEt.getText().toString().trim())) {
+                    if (adapter != null) {
+                        adapter.filter("");
+                    }
+                }
+                scrollTodown();
+            }
+        });
+        searchEt.setDrawableClickListener(new DrawableClickListener() {
+            @Override
+            public void onClick(DrawablePosition target) {
+                switch (target) {
+                    case RIGHT:
+                        //Do something here
+
+                        if (TextUtils.isEmpty(searchEt.getText().toString().trim())) {
+                            if (adapter != null) {
+                                adapter.filter("");
+                            }
+                        } else {
+                            if (adapter != null) {
+                                adapter.filter(searchEt.getText().toString().trim());
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
 
         ChatApplication app = (ChatApplication) getApplication();
         mSocket = app.getSocket();
         mSocket.connect();
+
+        mSocket.on("onTyping", onTyping);
+        mSocket.on("onStopTyping", onStopTyping);
+
+        mSocket.on("userOnline", onOnlineStatus);
+        mSocket.on("userOffline", onOfflineStatus);
+        mSocket.on("disabledUser", onDisable);
 
         msg_edittext.addTextChangedListener(new TextWatcher() {
             @Override
@@ -131,16 +200,16 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-               /* if (!mTyping) {
+                if (!mTyping) {
                     mTyping = true;
                     JsonObject object = new JsonObject();
-                    object.addProperty("reciverid", rid);
+                    object.addProperty("reciverid", receiverId);
                     object.addProperty("senderid", sd.getKeyId());
                     object.addProperty("msg", "typing...");
                     mSocket.emit("typing", object);
                 }
                 mTypingHandler.removeCallbacks(onTypingTimeout);
-                mTypingHandler.postDelayed(onTypingTimeout, TYPING_TIMER_LENGTH);*/
+                mTypingHandler.postDelayed(onTypingTimeout, TYPING_TIMER_LENGTH);
             }
 
             @Override
@@ -376,7 +445,7 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
                         // Toast.makeText(ChatActivity.this,"OnWorking",Toast.LENGTH_SHORT).show();
                         boolean cantact = Permission.checkPermisionForREAD_CONTACTS(SingleChatActivity.this);
                         if (cantact) {
-                          //  addContact(username, rid);
+                            addContact(receiverName, receiverId);
                         }
                     }
                 });
@@ -384,7 +453,7 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onClick(View v) {
                         popupWindowForSetting.dismiss();
-                        //searchLayout.setVisibility(View.VISIBLE);
+                        searchLayout.setVisibility(View.VISIBLE);
 
                     }
                 });
@@ -418,7 +487,16 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onClick(View v) {
                         popupWindowForSetting.dismiss();
-                       // new DeleteAllChatTask().execute();
+                       DBUtil.deleteSingleChatAll(SingleChatActivity.this,Integer.parseInt(receiverId),Integer.parseInt(sd.getKeyId()),receiverName);
+                        list.clear();
+                        if (adapter!=null) {
+                            adapter.notifyDataSetChanged();
+                            scrollTodown();
+                        }else {
+                            adapter=new SingleChatAdapter(SingleChatActivity.this,list,list,"");
+                            recyclerView.setAdapter(adapter);
+                            scrollTodown();
+                        }
                     }
                 });
             }
@@ -649,8 +727,8 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
                     public void onClick(View v) {
 
                         popupWindow.dismiss();
-                       /* Intent i = new Intent(SingleChatActivity.this, CareerContactListActivity.class);
-                        startActivityForResult(i, MY_PERMISSIONS_CONTACT_SHARE);*/
+                        Intent i = new Intent(SingleChatActivity.this, CareerContactListActivity.class);
+                        startActivityForResult(i, MY_PERMISSIONS_CONTACT_SHARE);
                     }
                 });
 
@@ -700,6 +778,46 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
         // FOR RECORDING END
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //clearNotifications();
+        //  Toast.makeText(ChatActivity.this, "OnStart()", Toast.LENGTH_SHORT).show();
+        if (mSocket == null) {
+            ChatApplication app = (ChatApplication) getApplication();
+            mSocket = app.getSocket();
+            mSocket.connect();
+        }
+        JsonObject jsonObject = new JsonObject();
+
+        jsonObject.addProperty("id", sd.getKeyId());
+        jsonObject.addProperty("messageCount", "0");
+        jsonObject.addProperty("isChatEnable", "true");
+        jsonObject.addProperty("isDelivered", "true");
+        jsonObject.addProperty("isReaded", "true");
+        jsonObject.addProperty("isOnlineStatus", "true");
+        Log.e("DATA_FOR_USERID", jsonObject + "");
+
+        mSocket.emit("userid", jsonObject);
+
+        JsonObject jsonObject1 = new JsonObject();
+        jsonObject1.addProperty("id", sd.getKeyId());
+        jsonObject1.addProperty("isChatEnable", "true");
+        jsonObject1.addProperty("reciverid", receiverId);
+        mSocket.emit("togglewindowstatus", jsonObject1);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ChatApplication.getInstance().setConnectivityListener(this);
+
+        if (backImg != null) {
+            backImg.setImageResource(sd.getWallpaper());
+            //     Toast.makeText(ChatActivity.this, "onResume()", Toast.LENGTH_SHORT).show();
+
+        }
+    }
     public void GPSStatus(){
         locationManager = (LocationManager)getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -732,84 +850,11 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
             case R.id.sendMessageBtn:
               //  replyLinear.setVisibility(View.GONE);
                 String strMessage = msg_edittext.getText().toString().trim();
-                Calendar c = Calendar.getInstance();
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String formattedDate = df.format(c.getTime());
-                String time = timeConverter(formattedDate);
-                String date = dateConverter(formattedDate);
-                String mid= getSaltString();
 
-                /*if (replyStatus){
-                    replyStatus=false;
-                    if (strMessage.length() > 0) {
-                        msg_edittext.setText("");
-                        insertInLocalDb(replyMessage+"%@,%"+replyType+"%@,%"+strMessage, "reply", "NA", "NA");
-                    }
-                }else {*/
                  //   replyStatus=false;
                     if (strMessage.length() > 0) {
                         msg_edittext.setText("");
-                        SingleChatModule singleChatModule = new SingleChatModule();
-                        singleChatModule.setSenderId(sd.getKeyId());
-                        singleChatModule.setRecieverId(receiverId);
-                        singleChatModule.setDatetime(formattedDate.toString());
-                        singleChatModule.setTime(time);
-                        singleChatModule.setDate(date);
-                        singleChatModule.setMessage(strMessage);
-                        singleChatModule.setIsRead("");
-                        singleChatModule.setDeliver("");
-                        singleChatModule.setChatType("singlechat");
-                        singleChatModule.setResponse("");
-                        singleChatModule.setHeading(receiverName);
-                        singleChatModule.setSelect(true);
-                        singleChatModule.setChatStatus("");
-                        singleChatModule.setChatUploading("");
-                        singleChatModule.setDeviceId(did);
-                        singleChatModule.setChatImage("");
-                        singleChatModule.setExtension("");
-                        singleChatModule.setListPosition("");
-                        singleChatModule.setParent("");
-                        singleChatModule.setUid(mid);
-                        singleChatModule.setGravitystatus("1");
-                        list.add(DBUtil.singleChatInsert(SingleChatActivity.this,singleChatModule));
-                        adapter.notifyDataSetChanged();
-                        scrollTodown();
-
-                        ChatUserList allPrdctData = new ChatUserList();
-                        allPrdctData.setId(receiverId);
-                        allPrdctData.setName(receiverName);
-                        allPrdctData.setDescription("");
-                        allPrdctData.setLastMessage(strMessage);
-                        allPrdctData.setDatetime(formattedDate);
-                        allPrdctData.setUserstatus("false");
-                        allPrdctData.setTime(time);
-                        allPrdctData.setPhoto("");
-                        allPrdctData.setDtype("");
-                        allPrdctData.setChattype("");
-                        allPrdctData.setChattype("indivisual");
-                        allPrdctData.setDid(did);
-                        allPrdctData.setAdmin("");
-
-                        DBUtil.chatUserListInsert(SingleChatActivity.this, allPrdctData);
-
-                        Log.d("AttemptByService","process");
-                        JsonObject object = new JsonObject();
-                        object.addProperty("reciverid", receiverId);
-                        object.addProperty("message", strMessage);
-                        object.addProperty("dtype", "msg");
-                        object.addProperty("sname", sd.getUserName());
-                        object.addProperty("did", did);
-                        object.addProperty("pusddid", sd.getUserFcmId());
-                        object.addProperty("uid", sd.getKeyId());
-                        object.addProperty("datetime", formattedDate);
-                        object.addProperty("isread", "false");
-                        object.addProperty("deliver", "false");
-                        object.addProperty("senderid", sd.getKeyId());
-                        object.addProperty("receivername", receiverName);
-                        object.addProperty("sender_name",sd.getUserName());
-                        mSocket.emit("sendMessage", object);
-                        Log.d("SEND_SINGLE", object.toString());
-
+                        insertData(strMessage, "msg");
                     }
                // }
                 break;
@@ -818,25 +863,169 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
          }
     }
 
+    private void insertData(String message,String chattype){
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = df.format(c.getTime());
+        String time = timeConverter(formattedDate);
+        String date = dateConverter(formattedDate);
+        String mid= getSaltString();
+
+        SingleChatModule singleChatModule = new SingleChatModule();
+        singleChatModule.setSenderId(sd.getKeyId());
+        singleChatModule.setRecieverId(receiverId);
+        singleChatModule.setDatetime(formattedDate.toString());
+        singleChatModule.setTime(time);
+        singleChatModule.setDate(date);
+        singleChatModule.setMessage(message);
+        singleChatModule.setIsRead("");
+        singleChatModule.setDeliver("");
+        singleChatModule.setChatType(chattype);
+        singleChatModule.setResponse("");
+        singleChatModule.setHeading(receiverName);
+        singleChatModule.setSelect(true);
+        singleChatModule.setChatStatus("");
+        singleChatModule.setChatUploading("");
+        singleChatModule.setDeviceId(did);
+        singleChatModule.setChatImage("");
+        singleChatModule.setExtension("");
+        singleChatModule.setListPosition("");
+        singleChatModule.setParent("");
+        singleChatModule.setUid(mid);
+        singleChatModule.setGravitystatus("1");
+        list.add(DBUtil.singleChatInsert(SingleChatActivity.this,singleChatModule));
+        adapter.notifyDataSetChanged();
+        scrollTodown();
+
+        ChatUserList allPrdctData = new ChatUserList();
+        allPrdctData.setId(receiverId);
+        allPrdctData.setName(receiverName);
+        allPrdctData.setDescription("");
+        allPrdctData.setLastMessage(message);
+        allPrdctData.setDatetime(formattedDate);
+        allPrdctData.setUserstatus("false");
+        allPrdctData.setTime(time);
+        allPrdctData.setPhoto("");
+        allPrdctData.setDtype(chattype);
+        allPrdctData.setChattype("indivisual");
+        allPrdctData.setDid(did);
+        allPrdctData.setAdmin("");
+
+        DBUtil.chatUserListInsert(SingleChatActivity.this, allPrdctData);
+
+        Log.d("AttemptByService","process");
+        JsonObject object = new JsonObject();
+        object.addProperty("reciverid", receiverId);
+        object.addProperty("message", message);
+        object.addProperty("dtype", chattype);
+        object.addProperty("sname", sd.getUserName());
+        object.addProperty("did", did);
+        object.addProperty("pusddid", sd.getUserFcmId());
+        object.addProperty("uid", sd.getKeyId());
+        object.addProperty("datetime", formattedDate);
+        object.addProperty("isread", "false");
+        object.addProperty("deliver", "false");
+        object.addProperty("senderid", sd.getKeyId());
+        object.addProperty("receivername", receiverName);
+        object.addProperty("sender_name",sd.getUserName());
+        mSocket.emit("sendMessage", object);
+        Log.d("SEND_SINGLE", object.toString());
+    }
 
     private void scrollTodown() {
         recyclerView.setHasFixedSize(true);
         layoutManager =  new LinearLayoutManager(SingleChatActivity.this,LinearLayoutManager.VERTICAL, false);
         layoutManager.setStackFromEnd(true);
-
        // recyclerView.addItemDecoration(new DividerItemDecoration(SingleChatActivity.this, LinearLayoutManager.VERTICAL));
         recyclerView.setLayoutManager(layoutManager);
 
     }
 
+    private void addContact(String Name, String number) {
+
+        ArrayList<ContentProviderOperation> ops =
+                new ArrayList<ContentProviderOperation>();
+
+        int rawContactID = ops.size();
+
+// Adding insert operation to operations list
+// to insert a new raw contact in the table ContactsContract.RawContacts
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
+                .build());
+
+// Adding insert operation to operations list
+// to insert display name in the table ContactsContract.Data
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, Name)
+                .build());
+
+// Adding insert operation to operations list
+// to insert Mobile Number in the table ContactsContract.Data
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, Name)
+                .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+                .build());
+
+// Adding insert operation to operations list
+// to  insert Home Phone Number in the table ContactsContract.Data
+    /*    ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
+                .withValue(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
+                .withValue(Phone.NUMBER, "78787878")
+                .withValue(Phone.TYPE, Phone.TYPE_HOME)
+                .build());
+
+// Adding insert operation to operations list
+// to insert Home Email in the table ContactsContract.Data
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
+                .withValue(ContactsContract.Data.MIMETYPE, Email.CONTENT_ITEM_TYPE)
+                .withValue(Email.ADDRESS, "Ankit@gmail.vcom")
+                .withValue(Email.TYPE, Email.TYPE_HOME)
+                .build());
+
+// Adding insert operation to operations list
+// to insert Work Email in the table ContactsContract.Data
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactID)
+                .withValue(ContactsContract.Data.MIMETYPE, Email.CONTENT_ITEM_TYPE)
+                .withValue(Email.ADDRESS, "asdfqsdf")
+                .withValue(Email.TYPE, Email.TYPE_WORK)
+                .build());*/
+
+        try {
+// Executing all the insert operations as a single database transaction
+            getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
+            Toast.makeText(getBaseContext(), "Contact is successfully added", Toast.LENGTH_SHORT).show();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (OperationApplicationException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-        // register connection status listener
-        ChatApplication.getInstance().setConnectivityListener(this);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_AUTOCOMPLETE) {
+            String stBuilder = data.getStringExtra("data");
+            insertData(stBuilder, "location");
+        }
+        else if (requestCode == MY_PERMISSIONS_CONTACT_SHARE && resultCode == RESULT_OK
+                && null != data) {
+            String contactDetail = data.getStringExtra("share");
+            Log.d("MY_PERMISSIONS", contactDetail + "");
+            //attemptSend(contactDetail, "share");
+            insertData(contactDetail, "share");
+        }
     }
+
 
     @Override
     public void getChatList(ChatUserList chatModule) {
@@ -863,4 +1052,185 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
         }
     });
         }
+
+    private Emitter.Listener onTyping = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    try {
+                        String senderid = data.getString("senderid");
+                        String rid = data.getString("reciverid");
+                        String msg = data.optString("msg");
+                        if (senderid.equalsIgnoreCase(receiverId)) {
+                            typingStatus.setText(msg);
+                            typingStatus.setVisibility(View.VISIBLE);
+                            txt_online_status.setVisibility(View.GONE);
+                            Log.d("TYPING", "RUNNING TYPING");
+                        }
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.getMessage());
+                        return;
+                    }
+                }
+            });
+        }
+    };
+    private Emitter.Listener onOnlineStatus = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    try {
+                        JSONArray jsonArray = data.getJSONArray("myId");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject obj1 = jsonArray.getJSONObject(i);
+                            String id = obj1.getString("userId");
+                            String onlineStatus = obj1.getString("onlineStatus");
+                            if (!id.equalsIgnoreCase(sd.getKeyId())) {
+                                if (id.equalsIgnoreCase(receiverId)) {
+                                    if (onlineStatus.equalsIgnoreCase("true")) {
+                                        txt_online_status.setVisibility(View.VISIBLE);
+                                    } else {
+                                        txt_online_status.setVisibility(View.GONE);
+                                    }
+                                 /*   for (JsonModelForChat model : list) {
+                                        // if (model.getResponse().equalsIgnoreCase("All")) {
+                                        model.setResponse("delivered");
+                                        //  new LocalDBHelper(ChatActivity.this).updateResponse("delivered", rid);
+                                        //}
+                                    }
+                                    if (chatAdapter != null) {
+                                        chatAdapter.notifyDataSetChanged();
+                                    } else {
+                                        chatAdapter = new ChatAdapter(ChatActivity.this, msgListView, R.layout.chat_list_item, list, multiselect_list, mode);
+                                        msgListView.setAdapter(chatAdapter);
+                                    }*/
+                                }
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    };
+
+    private Emitter.Listener onOfflineStatus = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    //Log.d("OFFLINE_DATA", data + "");
+                    try {
+                        JSONArray jsonArray = data.getJSONArray("myId");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject obj1 = jsonArray.getJSONObject(i);
+                            String id = obj1.getString("userId");
+                            if (!id.equalsIgnoreCase(sd.getKeyId())) {
+                                if (id.equalsIgnoreCase(receiverId)) {
+                                    txt_online_status.setVisibility(View.VISIBLE);
+                                } else {
+                                    txt_online_status.setVisibility(View.GONE);
+                                }
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    };
+
+    private Emitter.Listener onDisable = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    Log.d("OFFLINE_DATA", data + "");
+                    try {
+                        String id = data.getString("userId");
+                        String onlineStatus = data.getString("onlineStatus");
+                        if (!id.equalsIgnoreCase(sd.getKeyId())) {
+                            if (id.equalsIgnoreCase(receiverId)) {
+                                txt_online_status.setVisibility(View.GONE);
+                            } else {
+                                txt_online_status.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    };
+
+    private Emitter.Listener onStopTyping = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    try {
+                        String senderid = data.getString("senderid");
+                        String rid = data.getString("reciverid");
+                        if (senderid.equalsIgnoreCase(receiverId)) {
+                            typingStatus.setVisibility(View.GONE);
+                            txt_online_status.setVisibility(View.VISIBLE);
+                        }
+                    } catch (JSONException e) {
+                        Log.d(TAG, e.getMessage());
+                        return;
+                    }
+                }
+            });
+        }
+    };
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JsonObject jsonObject = new JsonObject();
+
+        jsonObject.addProperty("id", sd.getKeyId());
+        jsonObject.addProperty("messageCount", "0");
+        jsonObject.addProperty("isChatEnable", "false");
+        jsonObject.addProperty("isDelivered", "false");
+        jsonObject.addProperty("isReaded", "false");
+        jsonObject.addProperty("isOnlineStatus", "false");
+
+        JsonObject jsonObject1 = new JsonObject();
+        jsonObject1.addProperty("id", sd.getKeyId());
+        jsonObject1.addProperty("isChatEnable", "false");
+        jsonObject1.addProperty("reciverid", receiverId);
+        mSocket.emit("togglewindowstatus", jsonObject1);
+    }
+
+    private Runnable onTypingTimeout = new Runnable() {
+        @Override
+        public void run() {
+            if (!mTyping) return;
+            mTyping = false;
+
+            JsonObject object = new JsonObject();
+            object.addProperty("reciverid", receiverId);
+            object.addProperty("senderid", sd.getKeyId());
+            mSocket.emit("stopTyping", object);
+        }
+    };
+
     }

@@ -208,8 +208,21 @@ public class ChatUserListAdapter extends RecyclerView.Adapter<ChatUserListAdapte
         });
 
         viewHolder.userName.setText(list.get(position).getName());
+        switch (list.get(position).getDtype()){
+            case "share":
+                viewHolder.msgtText.setText("CONTACT");
 
-         viewHolder.msgtText.setText(list.get(position).getLastMessage());
+                break;
+            case "location":
+                viewHolder.msgtText.setText("LOCATION");
+
+                break;
+                default:
+                    viewHolder.msgtText.setText(list.get(position).getLastMessage());
+
+                    break;
+        }
+
 
     }
 

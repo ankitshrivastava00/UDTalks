@@ -95,6 +95,22 @@
                 <include
                     layout="@layout/outgoing_tv"
                     android:visibility="gone" />
+                <include
+                    layout="@layout/outgoing_location"
+                    android:visibility="gone"
+                    ></include>
+                <include
+                    layout="@layout/incoming_location"
+                    android:visibility="gone"
+                    ></include>
+                <include
+                    layout="@layout/outgoing_contact_list"
+                    android:visibility="gone"
+                    ></include>
+                <include
+                    layout="@layout/incoming_contact_list"
+                    android:visibility="gone"
+                    ></include>
 
 
             </RelativeLayout>

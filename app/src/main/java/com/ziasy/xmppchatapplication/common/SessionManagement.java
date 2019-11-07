@@ -24,7 +24,7 @@ public class SessionManagement {
     private static final String USER_FCM_ID = "USER_FCM_ID";
     private static final String USER_OTP = "USER_OTP";
     private static final String KEY_ID = "KEY_ID";
- //   private static final int WALLPAPER = R.drawable.wall_default;
+    private static final int WALLPAPER = R.drawable.wall_default;
   //  private static final int GROUP_WALLPAPER = R.drawable.background_profile;
 
     public SessionManagement(Context context) {
@@ -69,7 +69,7 @@ public class SessionManagement {
         editor.commit();
 
     }
-   /* public int getWallpaper() {
+    public int getWallpaper() {
         return pref.getInt("WALLPAPER", WALLPAPER);
     }
 
@@ -77,7 +77,7 @@ public class SessionManagement {
         editor.putInt("WALLPAPER", s);
         editor.commit();
 
-    }*/
+    }
 /*
     public int getGroupWallpaper() {
         return pref.getInt("GROUP_WALLPAPER", GROUP_WALLPAPER);

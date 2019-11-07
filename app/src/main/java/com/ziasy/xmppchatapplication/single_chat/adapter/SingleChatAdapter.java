@@ -34,6 +34,7 @@ import com.ziasy.xmppchatapplication.common.Confiq;
 import com.ziasy.xmppchatapplication.common.ConnectionDetector;
 import com.ziasy.xmppchatapplication.common.Permission;
 import com.ziasy.xmppchatapplication.common.SessionManagement;
+import com.ziasy.xmppchatapplication.mapbox.MapBoxActivity;
 import com.ziasy.xmppchatapplication.model.JsonModelForChat;
 import com.ziasy.xmppchatapplication.model.SingleChatModule;
 import com.ziasy.xmppchatapplication.single_chat.activity.SingleChatActivity;
@@ -90,23 +91,153 @@ public class SingleChatAdapter extends RecyclerView.Adapter<SingleChatAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int position) {
         final SingleChatModule message = (SingleChatModule) chatMessageList.get(position);
-
+        viewHolder.layout.setVisibility(View.GONE);
+        viewHolder.parent_layout.setVisibility(View.GONE);
+        viewHolder.outgoing_location_relative.setVisibility(View.GONE);
+        viewHolder.incoming_location_relative.setVisibility(View.GONE);
+        viewHolder.outgoing_linear_contact.setVisibility(View.GONE);
+        viewHolder.incoming_linear_contact.setVisibility(View.GONE);
        if (message.getSenderId().equalsIgnoreCase(new SessionManagement(context).getKeyId())) {
 
-            viewHolder.outgoingTextImage.setText(message.getMessage());
-            viewHolder.outgoing_text_time.setText(message.getTime());
-            viewHolder.layout.setVisibility(View.VISIBLE);
-            viewHolder.parent_layout.setVisibility(View.GONE);
-           // scrollInterface.scroll();
+           switch (message.getChatType()){
+               case "msg":
+                   viewHolder.outgoingTextImage.setText(message.getMessage());
+                   viewHolder.outgoing_text_time.setText(message.getTime());
+                   viewHolder.layout.setVisibility(View.VISIBLE);
 
+
+                   break;
+               case "location":
+                   viewHolder.outgoing_location_relative.setVisibility(View.VISIBLE);
+                   viewHolder.outgoing_location_time.setText(message.getTime());
+                   String strLocation[] = message.getMessage().split(",@,");
+                   viewHolder.outgoing_location_address.setText(strLocation[2]);
+
+                   viewHolder.outgong_linear_click.setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View view) {
+                           boolean fine_location = Permission.checkPermisionForACCESS_FINE_LOCATION(context);
+
+                           if (fine_location){
+                               chatActivity.GPSStatus();
+                               if(chatActivity.GpsStatus == true)
+                               {
+                                   String strL[] = message.getMessage().split(",@,");
+                                   Intent i = new Intent(context, MapBoxActivity.class);
+                                   i.putExtra("lat", Double.valueOf(strL[0]));
+                                   i.putExtra("lang", Double.valueOf(strL[1]));
+                                   i.putExtra("title", strL[2]);
+                                   context.startActivity(i);
+                               }else
+                               {
+
+                                   Intent  intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                   context.startActivity(intent1);
+
+                               }
+                           }
+                       }
+                   });
+
+                   break;
+               case "share":
+                   viewHolder.outgoing_linear_contact.setVisibility(View.VISIBLE);
+                   viewHolder.outgoing_contact_time.setText(message.getTime());
+                   String str[] = message.getMessage().split(",");
+                   viewHolder.outgoing_contact_number.setText(str[0]);
+                   viewHolder.outgoing_contact_view.setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View view) {
+                          /* Intent i = new Intent(context, ProfileActivity.class);
+                           i.putExtra("name", str[0]);
+                           i.putExtra("rid", str[2]);
+                           i.putExtra("did", str[3]);
+                           context.startActivity(i);*/
+                       }
+                   });
+                   break;
+                   default:
+                       viewHolder.outgoing_linear_contact.setVisibility(View.GONE);
+                       viewHolder.incoming_linear_contact.setVisibility(View.GONE);
+                       viewHolder.layout.setVisibility(View.GONE);
+                       viewHolder.parent_layout.setVisibility(View.GONE);
+                       viewHolder.outgoing_location_relative.setVisibility(View.GONE);
+                       viewHolder.incoming_location_relative.setVisibility(View.GONE);
+
+                       break;
+           }
         }
         else {
+           switch (message.getChatType()){
+               case "msg":
+                   viewHolder.parent_layout.setVisibility(View.VISIBLE);
+                   viewHolder.incomming_text.setText(message.getMessage());
+                   viewHolder.incoming_text_time.setText(message.getTime());
+                   break;
+               case "location":
+                   viewHolder.incoming_location_relative.setVisibility(View.VISIBLE);
+                   viewHolder.incoming_location_time.setText(message.getTime());
+                   String strLocation[] = message.getMessage().split(",@,");
+                   //String currLocation = "&daddr=" + strLocation[2];
+                   viewHolder.incoming_location_address.setText(strLocation[2]);
 
-            viewHolder.layout.setVisibility(View.GONE);
-            viewHolder.parent_layout.setVisibility(View.VISIBLE);
-            viewHolder.incomming_text.setText(message.getMessage());
-            viewHolder.incoming_text_time.setText(message.getTime());
-           // scrollInterface.scroll();
+                   viewHolder.incoming_location_click.setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View view) {
+                           boolean fine_location = Permission.checkPermisionForACCESS_FINE_LOCATION(context);
+
+                           if (fine_location){
+
+                               chatActivity.GPSStatus();
+                               if(chatActivity.GpsStatus == true)
+                               {
+                                   String strL[] = message.getMessage().split(",@,");
+
+                                   Intent i = new Intent(context, MapBoxActivity.class);
+                                   i.putExtra("lat", Double.valueOf(strL[0]));
+                                   i.putExtra("lang", Double.valueOf(strL[1]));
+                                   i.putExtra("title", strL[2]);
+                                   context.startActivity(i);
+                               }else
+                               {
+
+                                   Intent  intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                   context.startActivity(intent1);
+
+                               }
+
+                           }
+                       }
+                   });
+                   break;
+               case "share":
+
+                   viewHolder.incoming_linear_contact.setVisibility(View.VISIBLE);
+                   String[] strData = message.getMessage().split(",");
+                   viewHolder.incoming_contact_number.setText(strData[0]);
+                   viewHolder.incoming_view_image.setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View view) {
+                           /*Intent i = new Intent(context, ProfileActivity.class);
+                           i.putExtra("name", strData[0]);
+                           i.putExtra("rid", strData[2]);
+                           i.putExtra("did", strData[3]);
+                           context.startActivity(i);*/
+                       }
+                   });
+                   break;
+               default:
+
+                   viewHolder.incoming_linear_contact.setVisibility(View.GONE);
+                   viewHolder.outgoing_linear_contact.setVisibility(View.GONE);
+
+                   viewHolder.outgoing_location_relative.setVisibility(View.GONE);
+                   viewHolder.layout.setVisibility(View.GONE);
+                   viewHolder.incoming_location_relative.setVisibility(View.GONE);
+                   viewHolder.parent_layout.setVisibility(View.GONE);
+                   break;
+           }
+
         }
       /*  switch (message.getChatType()) {
 

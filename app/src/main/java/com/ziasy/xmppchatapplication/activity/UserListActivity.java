@@ -153,10 +153,10 @@ public class UserListActivity extends AppCompatActivity implements OnClickListen
         super.onDestroy();
         if (mSocket!=null){
 
-        JsonObject jsonObject = new JsonObject();
+       /* JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("id", sd.getKeyId());
         jsonObject.addProperty("isOnlineStatus", "false");
-        mSocket.emit("disableUser", jsonObject);
+        mSocket.emit("disableUser", jsonObject);*/
     }
     }
 

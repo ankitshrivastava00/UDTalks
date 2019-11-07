@@ -1,5 +1,7 @@
 package com.ziasy.xmppchatapplication.reciever;
 
+import android.app.NotificationChannel;
+import android.app.NotificationChannelGroup;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -9,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -46,9 +49,10 @@ import com.ziasy.xmppchatapplication.single_chat.activity.SingleChatActivity;
 import static com.ziasy.xmppchatapplication.common.Utils.dateConverter;
 import static com.ziasy.xmppchatapplication.common.Utils.getSaltString;
 import static com.ziasy.xmppchatapplication.common.Utils.timeConverter;
+import static me.pushy.sdk.config.PushyNotificationChannel.CHANNEL_ID;
 
 public class PushReceiver extends BroadcastReceiver {
-
+  ///  private NotificationManager notificationManager;
     private String pusddid = null,reciverid = null,uid = null, image = null, description = null, admin = null, chattype = null, message = null, dtype = null, senderid = null, isread = null, deliver = null,
             sname = null, did = null, datetime = null, doc_name=null, uname= null,not="";
     // ScrollInterface singleChatInterface;
@@ -129,7 +133,7 @@ public class PushReceiver extends BroadcastReceiver {
                         singleChatModule.setMessage(textmessage);
                         singleChatModule.setIsRead(ismsgread);
                         singleChatModule.setDeliver(deliever);
-                        singleChatModule.setChatType(chat_type);
+                        singleChatModule.setChatType(messagetype);
                         singleChatModule.setResponse("");
                         singleChatModule.setHeading(sendername);
                         singleChatModule.setSelect(true);
@@ -153,14 +157,13 @@ public class PushReceiver extends BroadcastReceiver {
                         allPrdctData.setUserstatus("false");
                         allPrdctData.setTime(time);
                         allPrdctData.setPhoto("");
-                        allPrdctData.setDtype("");
-                        allPrdctData.setChattype("");
+                        allPrdctData.setDtype(messagetype);
                         allPrdctData.setChattype("indivisual");
                         allPrdctData.setDid(senderdevid);
                         allPrdctData.setAdmin("");
                         allPrdctData.setMute("false");
                         DBUtil.chatUserListInsert(context, allPrdctData);
-                        sendNotification(0, sendername, textmessage, context, messagetype, chat_type);
+                        sendNotification(Integer.parseInt(sender_id), sendername, textmessage, context, messagetype, chat_type);
 
                         if (singleChatModule != null) {
                             singleChatInterface.getChatList(allPrdctData);
@@ -329,13 +332,21 @@ public class PushReceiver extends BroadcastReceiver {
                         .setColor(context.getResources().getColor(R.color.colorPrimary))
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
                         .setLargeIcon(bm)
+                        .setChannelId("UDTALKS")
+
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri);
                         //.setContentIntent(pendingIntent);
 
                 NotificationManager notificationManager =
                         (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    NotificationChannel channel = new NotificationChannel("UDTALKS",
+                            "Chat",
+                            NotificationManager.IMPORTANCE_DEFAULT);
+                    channel.setDescription("This Application Use For Chatting");
+                    notificationManager.createNotificationChannel(channel);
+                }
                 notificationManager.notify(id, notificationBuilder.build());
                 //  ((Activity)context).finish();
             } else if (Type.equalsIgnoreCase("img")) {
@@ -414,8 +425,27 @@ public class PushReceiver extends BroadcastReceiver {
                         .setSound(defaultSoundUri)
                         ;// .setContentIntent(pendingIntent);
 
-                NotificationManager notificationManager =
+               NotificationManager  notificationManager =
                         (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+
+
+               /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    String groupId = "some_group_id";
+                    CharSequence groupName = "Some Group";
+                    NotificationManager notificationManager =
+                            (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.createNotificationChannelGroup(new NotificationChannelGroup(groupId, groupName));
+
+                    *//*
+                List<NotificationChannelGroup> notificationChannelGroups = new ArrayList();
+                notificationChannelGroups.add(new NotificationChannelGroup("group_one", "Group One"));
+                    notificationChannelGroups.add(new NotificationChannelGroup("group_two", "Group Two"));
+
+                    notificationChannelGroups.add(new NotificationChannelGroup("group_three", "Group Three"));
+
+                    notificationManager.createNotificationChannelGroup(notificationChannelGroups);*//*
+                }*/
 
                 notificationManager.notify(id, notificationBuilder.build());
             } else if (Type.equalsIgnoreCase("location")) {
@@ -425,7 +455,7 @@ public class PushReceiver extends BroadcastReceiver {
                         .setContentTitle(Name)
                         .setContentText("Location")
                         .setColor(context.getResources().getColor(R.color.colorPrimary))
-
+                        .setChannelId("UDTALKS")
                         .setStyle(new NotificationCompat.BigTextStyle().bigText("Location"))
                         .setLargeIcon(bm)
                         .setAutoCancel(true)
@@ -479,7 +509,21 @@ public class PushReceiver extends BroadcastReceiver {
 
         }
     }
-
+  /*  private void createNotificationChannel(Context context) {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "UDTALKS";
+            String description = "This is use for chat";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }*/
     public interface RecievingMessageInterface{
         void getChatList(ChatUserList chatModule);
         void getSingleChat(SingleChatModule chatModule);
