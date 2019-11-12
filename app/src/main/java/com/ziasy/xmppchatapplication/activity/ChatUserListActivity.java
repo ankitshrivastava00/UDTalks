@@ -117,6 +117,9 @@ public class ChatUserListActivity extends AppCompatActivity implements View.OnCl
                 }
             }
         });
+
+
+
         searchEt.addTextChangedListener(new TextWatcher() {
 
             @Override

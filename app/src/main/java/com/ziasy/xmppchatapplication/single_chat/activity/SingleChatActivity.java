@@ -158,7 +158,7 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
                 scrollTodown();
             }
         });
-        searchEt.setDrawableClickListener(new DrawableClickListener() {
+       /* searchEt.setDrawableClickListener(new DrawableClickListener() {
             @Override
             public void onClick(DrawablePosition target) {
                 switch (target) {
@@ -180,6 +180,56 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
                 }
             }
         });
+*/
+         searchEt.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (TextUtils.isEmpty(searchEt.getText().toString().trim())) {
+                    if (adapter != null) {
+                        adapter.filter("");
+                    }
+                } else {
+                    if (adapter != null) {
+                        adapter.filter(searchEt.getText().toString().trim());
+                    }
+                }
+            }
+
+        });
+
+        searchEt.setDrawableClickListener(new DrawableClickListener() {
+            public void onClick(DrawablePosition target) {
+                switch (target) {
+                    case RIGHT:
+                        //Do something here
+                        searchEt.setText("");
+                        if (TextUtils.isEmpty(searchEt.getText().toString().trim())) {
+                            if (adapter != null) {
+                                adapter.filter("");
+                            }
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+        });
+
+
+
 
         ChatApplication app = (ChatApplication) getApplication();
         mSocket = app.getSocket();

@@ -48,6 +48,7 @@ import java.util.Locale;
 // classes to calculate a route
 // classes needed to launch navigation UI
 
+//8085684000
 
 public class MapBoxCurrentLocation extends AppCompatActivity implements LocationListener,OnMapReadyCallback, PermissionsListener {
     // variables for adding location layer
@@ -58,7 +59,7 @@ public class MapBoxCurrentLocation extends AppCompatActivity implements Location
     private LocationComponent locationComponent;
     // variables for calculating and drawing a route
     // variables needed to initialize navigation
-    LocationManager locManager;
+    private LocationManager locManager;
     double longitude, latitude;
     private Button button;
     private static final int REQUEST_CODE_AUTOCOMPLETE = 1001;

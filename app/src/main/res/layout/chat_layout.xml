@@ -58,7 +58,7 @@
                     android:layout_height="35dp"
                     android:background="@drawable/rounded_edit_text_home"
                     android:cursorVisible="true"
-                    android:drawableRight="@drawable/search_chatting"
+                    android:drawableRight="@drawable/cancel"
 
                     android:hint="Enter keyword to search"
                     android:imeOptions="actionSearch"
