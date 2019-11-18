@@ -25,6 +25,7 @@ import static com.ziasy.xmppchatapplication.database.DBConstants.CHAT_USER_NAME;
 import static com.ziasy.xmppchatapplication.database.DBConstants.CHAT_USER_PHOTO;
 import static com.ziasy.xmppchatapplication.database.DBConstants.CHAT_USER_TIME;
 import static com.ziasy.xmppchatapplication.database.DBConstants.CHAT_USER_USERSTATUS;
+import static com.ziasy.xmppchatapplication.database.DBConstants.EMOJI_LIST;
 import static com.ziasy.xmppchatapplication.database.DBConstants.GROUP_CHAT_DATE;
 import static com.ziasy.xmppchatapplication.database.DBConstants.GROUP_CHAT_DATETIME;
 import static com.ziasy.xmppchatapplication.database.DBConstants.GROUP_CHAT_DELIVER;
@@ -102,6 +103,7 @@ public class DBData extends SQLiteOpenHelper {
                     + CHAT_USER_MUTE + " VARCHAR DEFAULT 'false'"
                     + " );";
 
+
     //SINGLE_CHAT_TABLE
     private static final String CREATE_SINGLE_CHAT_TABLE =
             "CREATE TABLE " + SINGLE_CHAT_TABLE + " ("
@@ -176,6 +178,8 @@ public class DBData extends SQLiteOpenHelper {
         db.execSQL(CREATE_SINGLE_CHAT_TABLE);
 
         db.execSQL(CREATE_GROUP_CHAT_TABLE);
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + EMOJI_LIST + " ( id VARCHAR, name VARCHAR , path TEXT, UNIQUE(id) );");
+
 //        db.execSQL(CREATE_TROLLEY_TABLE);
     }
 

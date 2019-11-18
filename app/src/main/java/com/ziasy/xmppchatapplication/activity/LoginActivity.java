@@ -30,6 +30,7 @@ import com.ziasy.xmppchatapplication.common.Confiq;
 import com.ziasy.xmppchatapplication.common.ConnectionDetector;
 import com.ziasy.xmppchatapplication.common.Permission;
 import com.ziasy.xmppchatapplication.common.SessionManagement;
+import com.ziasy.xmppchatapplication.database.LocalFileManager;
 //import com.ziasy.xmppchatapplication.localDB.LocalDBHelper;
 //import com.ziasy.xmppchatapplication.localDB.LocalFileManager;
 
@@ -59,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     private String strEmail;
     private Button btnSubmit;
     private SessionManagement sd;
+    private LocalFileManager localFileManager;
     private ProgressDialog pd;
     private ConnectionDetector cd;
     private String eid, number, status, name;
@@ -216,17 +218,16 @@ pd.show();
                                     }
 
                                     pd.dismiss();
-                                    /*localFileManager= new LocalFileManager(LoginActivity.this);
+                                    localFileManager= new LocalFileManager(LoginActivity.this);
                                     localFileManager.createVideoFolder();
                                     localFileManager.createAudioFolder();
                                     localFileManager.createImageFolder();
-                                    localFileManager.createDocsFolder();*/
+                                    localFileManager.createDocsFolder();
                                     if (status.equalsIgnoreCase("Already Registered")) {
                                         sd.setUserName(name);
                                         sd.setKeyId(eid);
                                         sd.setUserMobile(number);
-                                        sd.setLoginStatus("true");
-                                        Intent i = new Intent(LoginActivity.this, ChatUserListActivity.class);
+                                        Intent i = new Intent(LoginActivity.this, LoadingActivity.class);
                                         startActivity(i);
                                         finish();
 
@@ -234,8 +235,7 @@ pd.show();
                                         sd.setUserName(name);
                                         sd.setKeyId(eid);
                                         sd.setUserMobile(number);
-                                        sd.setLoginStatus("true");
-                                        Intent i = new Intent(LoginActivity.this, ChatUserListActivity.class);
+                                        Intent i = new Intent(LoginActivity.this, LoadingActivity.class);
                                         startActivity(i);
                                         finish();
                                         // registration failed.

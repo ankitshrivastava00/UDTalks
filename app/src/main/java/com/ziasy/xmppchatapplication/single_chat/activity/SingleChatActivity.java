@@ -27,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +46,8 @@ import com.google.gson.JsonObject;
 import com.ziasy.xmppchatapplication.R;
 import com.ziasy.xmppchatapplication.activity.CareerContactListActivity;
 import com.ziasy.xmppchatapplication.activity.ChatUserListActivity;
+import com.ziasy.xmppchatapplication.activity.EmojiActivity;
+import com.ziasy.xmppchatapplication.activity.ProfileActivity;
 import com.ziasy.xmppchatapplication.activity.WallpaperActivity;
 import com.ziasy.xmppchatapplication.common.ChatApplication;
 import com.ziasy.xmppchatapplication.common.ConnectionDetector;
@@ -74,6 +77,7 @@ import java.util.List;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
+import static com.ziasy.xmppchatapplication.common.Permission.EMOJI_RESULTS;
 import static com.ziasy.xmppchatapplication.common.Utils.dateConverter;
 import static com.ziasy.xmppchatapplication.common.Utils.getSaltString;
 import static com.ziasy.xmppchatapplication.common.Utils.timeConverter;
@@ -81,6 +85,7 @@ import static com.ziasy.xmppchatapplication.common.Utils.timeConverter;
 public class SingleChatActivity extends AppCompatActivity implements View.OnClickListener,  PushReceiver.RecievingMessageInterface {
     private boolean mTyping = false;
     private static final int TYPING_TIMER_LENGTH = 600;
+    private RelativeLayout chatName;
     // PopLayoutForAddAttachment
     private LinearLayout SellPost, BuyPost, MomentPick, ImageUpload, TakePicture, Video, TakeVideo, MediaTools, Location, ContactInfo, FileUpload, AudioFile;
     //PopLayoutForChatSetting
@@ -116,35 +121,52 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.chat_layout);
         toolbar=(Toolbar) findViewById(R.id.toolbar);
         list=new ArrayList<>();
-
+        chatName = (RelativeLayout) findViewById(R.id.chatName);
         receiverId = getIntent().getStringExtra("rid");
         receiverName = getIntent().getStringExtra("name");
         did=getIntent().getStringExtra("did");
         searchLayout = (LinearLayout) findViewById(R.id.searchLayout);
-
         cancelSearch = (TextView) findViewById(R.id.cancelSearch);
         searchEt = (CustomEditText) findViewById(R.id.searchEt);
         backImg = (ImageView) findViewById(R.id.backImg);
         txt_name = (TextView) findViewById(R.id.nameTv);
+        smileyBtn = (ImageView) findViewById(R.id.smileyBtn);
+
         txt_name.setText(receiverName);
         recyclerView=(RecyclerView)findViewById(R.id.recyclerId);
         hideEditText = (LinearLayout) findViewById(R.id.hideSliding);
         sendButton = (ImageView) findViewById(R.id.sendMessageBtn);
-
         ImageAttachment = (ImageView) findViewById(R.id.attachmentBtn);
         imageBack = (ImageView) findViewById(R.id.imageBack);
         ImageSetting = (ImageView) findViewById(R.id.settingIv);
         msg_edittext = (EditText) findViewById(R.id.msgEditText);
-
         txt_online_status = (TextView) findViewById(R.id.statusTv);
         typingStatus = (TextView) findViewById(R.id.typingStatus);
-
         imageBack.setOnClickListener(this);
         sendButton.setOnClickListener(this);
         cd=new ConnectionDetector(SingleChatActivity.this);
         sd=new SessionManagement(SingleChatActivity.this);
         scrollTodown();
-
+        smileyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SingleChatActivity.this, EmojiActivity.class);
+                startActivityForResult(intent, EMOJI_RESULTS);
+            }
+        });
+        chatName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(SingleChatActivity.this, ProfileActivity.class);
+                i.putExtra("name", receiverName);
+                i.putExtra("rid", receiverId);
+                i.putExtra("chattype", "indivisual");
+                i.putExtra("did", did);
+                i.putStringArrayListExtra("forwardString", new ArrayList<>());
+                i.putExtra("type", "");
+                startActivity(i);
+            }
+        });
         cancelSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -235,12 +257,12 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
         mSocket = app.getSocket();
         mSocket.connect();
 
-        mSocket.on("onTyping", onTyping);
-        mSocket.on("onStopTyping", onStopTyping);
+      //  mSocket.on("onTyping", onTyping);
+      //  mSocket.on("onStopTyping", onStopTyping);
 
-        mSocket.on("userOnline", onOnlineStatus);
-        mSocket.on("userOffline", onOfflineStatus);
-        mSocket.on("disabledUser", onDisable);
+       // mSocket.on("userOnline", onOnlineStatus);
+       // mSocket.on("userOffline", onOfflineStatus);
+      //  mSocket.on("disabledUser", onDisable);
 
         msg_edittext.addTextChangedListener(new TextWatcher() {
             @Override
@@ -252,11 +274,11 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!mTyping) {
                     mTyping = true;
-                    JsonObject object = new JsonObject();
+                    /*JsonObject object = new JsonObject();
                     object.addProperty("reciverid", receiverId);
                     object.addProperty("senderid", sd.getKeyId());
                     object.addProperty("msg", "typing...");
-                    mSocket.emit("typing", object);
+                    mSocket.emit("typing", object);*/
                 }
                 mTypingHandler.removeCallbacks(onTypingTimeout);
                 mTypingHandler.postDelayed(onTypingTimeout, TYPING_TIMER_LENGTH);
@@ -839,7 +861,7 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
             mSocket = app.getSocket();
             mSocket.connect();
         }
-        JsonObject jsonObject = new JsonObject();
+       /* JsonObject jsonObject = new JsonObject();
 
         jsonObject.addProperty("id", sd.getKeyId());
         jsonObject.addProperty("messageCount", "0");
@@ -855,7 +877,7 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
         jsonObject1.addProperty("id", sd.getKeyId());
         jsonObject1.addProperty("isChatEnable", "true");
         jsonObject1.addProperty("reciverid", receiverId);
-        mSocket.emit("togglewindowstatus", jsonObject1);
+        mSocket.emit("togglewindowstatus", jsonObject1);*/
     }
     @Override
     protected void onResume() {
@@ -893,7 +915,7 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
             case android.R.id.home:
                 onBackPressed();
                 break;
-                case R.id.imageBack:
+            case R.id.imageBack:
                 onBackPressed();
                 break;
 
@@ -1073,6 +1095,15 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
             Log.d("MY_PERMISSIONS", contactDetail + "");
             //attemptSend(contactDetail, "share");
             insertData(contactDetail, "share");
+        }else  if (requestCode == EMOJI_RESULTS && resultCode == RESULT_OK
+                && null != data) {
+            ArrayList<String> emoji_list = data.getStringArrayListExtra("image");
+            for (int i = 0; i < emoji_list.size(); i++) {
+                insertData(emoji_list.get(i), "emoji");
+
+                //attemptSendEmoji(emoji_list.get(i), "emoji");
+                Log.d("EMOJI_ICONE", emoji_list + "");
+            }
         }
     }
 
@@ -1254,7 +1285,7 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onPause() {
         super.onPause();
-        JsonObject jsonObject = new JsonObject();
+      /*  JsonObject jsonObject = new JsonObject();
 
         jsonObject.addProperty("id", sd.getKeyId());
         jsonObject.addProperty("messageCount", "0");
@@ -1262,12 +1293,13 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
         jsonObject.addProperty("isDelivered", "false");
         jsonObject.addProperty("isReaded", "false");
         jsonObject.addProperty("isOnlineStatus", "false");
+        mSocket.emit("userid", jsonObject);
 
         JsonObject jsonObject1 = new JsonObject();
         jsonObject1.addProperty("id", sd.getKeyId());
         jsonObject1.addProperty("isChatEnable", "false");
         jsonObject1.addProperty("reciverid", receiverId);
-        mSocket.emit("togglewindowstatus", jsonObject1);
+        mSocket.emit("togglewindowstatus", jsonObject1);*/
     }
 
     private Runnable onTypingTimeout = new Runnable() {
@@ -1276,10 +1308,10 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
             if (!mTyping) return;
             mTyping = false;
 
-            JsonObject object = new JsonObject();
+          /*  JsonObject object = new JsonObject();
             object.addProperty("reciverid", receiverId);
             object.addProperty("senderid", sd.getKeyId());
-            mSocket.emit("stopTyping", object);
+            mSocket.emit("stopTyping", object);*/
         }
     };
 

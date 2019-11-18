@@ -161,8 +161,19 @@ public class PushReceiver extends BroadcastReceiver {
                         allPrdctData.setChattype("indivisual");
                         allPrdctData.setDid(senderdevid);
                         allPrdctData.setAdmin("");
-                        allPrdctData.setMute("false");
+                      //  allPrdctData.setMute("false");
                         DBUtil.chatUserListInsert(context, allPrdctData);
+                        /*for (ChatUserList model : DBUtil.fetchAllChatList(context)){
+
+                            if(model.getMute().equalsIgnoreCase("false") && model.getId().equalsIgnoreCase(senderid)){
+                                if (!senderid.equalsIgnoreCase(sd.getKeyId())){
+                                    sendNotification(Integer.parseInt(senderid), sname, message, context, dtype, chattype);
+                                }
+                                break;
+                            }
+                        }
+*/
+
                         sendNotification(Integer.parseInt(sender_id), sendername, textmessage, context, messagetype, chat_type);
 
                         if (singleChatModule != null) {
@@ -333,10 +344,9 @@ public class PushReceiver extends BroadcastReceiver {
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
                         .setLargeIcon(bm)
                         .setChannelId("UDTALKS")
-
                         .setAutoCancel(true)
-                        .setSound(defaultSoundUri);
-                        //.setContentIntent(pendingIntent);
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent);
 
                 NotificationManager notificationManager =
                         (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -362,7 +372,7 @@ public class PushReceiver extends BroadcastReceiver {
                         .setLargeIcon(bm)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
-                        ;//.setContentIntent(pendingIntent);
+                        .setContentIntent(pendingIntent);
                 NotificationManager notificationManager =
                         (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 notificationManager.notify(id, notificationBuilder.build());
@@ -407,9 +417,10 @@ public class PushReceiver extends BroadcastReceiver {
                         .setLargeIcon(bm)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
-                        ;// .setContentIntent(pendingIntent);
+                         .setContentIntent(pendingIntent);
                 NotificationManager notificationManager =
                         (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
                 notificationManager.notify(id, notificationBuilder.build());
             } else if (Type.equalsIgnoreCase("audio")) {
                 Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -460,7 +471,7 @@ public class PushReceiver extends BroadcastReceiver {
                         .setLargeIcon(bm)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
-                        ;//.setContentIntent(pendingIntent);
+                        .setContentIntent(pendingIntent);
 
                 NotificationManager notificationManager =
                         (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -478,7 +489,7 @@ public class PushReceiver extends BroadcastReceiver {
                         .setLargeIcon(bm)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
-                        ;//.setContentIntent(pendingIntent);
+                        .setContentIntent(pendingIntent);
 
                 NotificationManager notificationManager =
                         (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

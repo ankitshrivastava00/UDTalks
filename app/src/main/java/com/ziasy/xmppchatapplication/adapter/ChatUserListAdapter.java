@@ -21,6 +21,7 @@ import com.daimajia.swipe.SwipeLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.ziasy.xmppchatapplication.R;
 import com.ziasy.xmppchatapplication.activity.ChatUserListActivity;
+import com.ziasy.xmppchatapplication.activity.ProfileActivity;
 import com.ziasy.xmppchatapplication.common.Permission;
 import com.ziasy.xmppchatapplication.model.ChatUserList;
 import com.ziasy.xmppchatapplication.single_chat.activity.SingleChatActivity;
@@ -93,7 +94,7 @@ public class ChatUserListAdapter extends RecyclerView.Adapter<ChatUserListAdapte
         viewHolder.ll_view_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent(context, ProfileActivity.class);
+                Intent intent = new Intent(context, ProfileActivity.class);
                 intent.putExtra("name", list.get(position).getName());
                 intent.putExtra("rid", list.get(position).getId());
                 intent.putExtra("chattype", "indivisual");
@@ -101,7 +102,7 @@ public class ChatUserListAdapter extends RecyclerView.Adapter<ChatUserListAdapte
                 intent.putStringArrayListExtra("forwardString", new ArrayList<>());
                 intent.putExtra("type", "");
                 intent.putExtra("mute", list.get(position).getMute());
-                activity.startActivity(intent);*/
+                context.startActivity(intent);
             }
         });
         viewHolder.view_profile_group.setOnClickListener(new View.OnClickListener() {

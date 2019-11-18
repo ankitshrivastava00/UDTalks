@@ -272,7 +272,21 @@
                                 android:background="@drawable/rounded_edit_text"
                                 android:gravity="center"
                                 android:visibility="visible">
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="5dp">
 
+                                    <ImageView
+                                        android:id="@+id/smileyBtn"
+                                        android:layout_width="40dp"
+                                        android:layout_height="40dp"
+                                        android:layout_gravity="center"
+                                        android:layout_marginBottom="8dp"
+                                        android:layout_marginTop="4dp"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/emoji23" />
+                                </LinearLayout>
                                 <EditText
                                     android:id="@+id/msgEditText"
                                     android:layout_width="0dp"

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="@dimen/dime_40dp"
+            android:layout_height="@dimen/dime_40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/down_arrow"
+            android:padding="@dimen/dime_5dp"
+          />
+
+        <TextView
+            android:id="@+id/sendTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_20dp"
+            android:text="send"
+            android:textStyle="bold"
+            android:padding="@dimen/dime_5dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/textSize20" />
+
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/grid_view_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear"
+        tools:listitem="@layout/emoji_layout"
+        android:numColumns="3"></GridView>
+</RelativeLayout>

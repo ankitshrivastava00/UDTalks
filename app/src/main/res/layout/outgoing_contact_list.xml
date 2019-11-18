@@ -94,7 +94,7 @@
                         android:layout_gravity="bottom|right|center_vertical"
                         android:layout_marginRight="0dp"
                         android:paddingTop="@dimen/marginBottom5dp"
-                        android:src="@drawable/undelivered"
+                        android:src="@drawable/delivered"
                         android:visibility="visible" />
 
                 </RelativeLayout>

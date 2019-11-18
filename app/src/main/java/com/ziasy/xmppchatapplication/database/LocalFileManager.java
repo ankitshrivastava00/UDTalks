@@ -1,4 +1,4 @@
-package com.ziasy.xmppchatapplication.db;
+package com.ziasy.xmppchatapplication.database;
 
 import android.content.Context;
 import android.os.Environment;

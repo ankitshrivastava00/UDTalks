@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.ziasy.xmppchatapplication.common.SessionManagement;
 import com.ziasy.xmppchatapplication.model.ChatUserList;
@@ -28,6 +29,7 @@ import static com.ziasy.xmppchatapplication.database.DBConstants.CHAT_USER_NAME;
 import static com.ziasy.xmppchatapplication.database.DBConstants.CHAT_USER_PHOTO;
 import static com.ziasy.xmppchatapplication.database.DBConstants.CHAT_USER_TIME;
 import static com.ziasy.xmppchatapplication.database.DBConstants.CHAT_USER_USERSTATUS;
+import static com.ziasy.xmppchatapplication.database.DBConstants.EMOJI_LIST;
 import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_DATE;
 import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_DATETIME;
 import static com.ziasy.xmppchatapplication.database.DBConstants.SINGLE_CHAT_DELIVER;
@@ -70,6 +72,55 @@ public class DBUtil {
      * @param context
      * @param
      */
+
+
+    public static void insertEmoji(Context context,String emoji_name,String emoji_path, String id){
+        SQLiteDatabase db = new DBData(context).getReadableDatabase();
+        //onCreate(msqLiteDatabase);
+        String Query = "Select * from " + EMOJI_LIST + " where path = '" + emoji_path + "'";
+        Cursor cursor= null;
+        try{
+            cursor = db.rawQuery(Query, null);
+            if(cursor.getCount() <= 0){
+            /*msqLiteDatabase.execSQL("REPLACE INTO "+ SINGLE_CHAT_TABLE +" ( id, send_id, rcv_id, date, message, isread, deliver, type, mid, response, time, lat, long, heading, datetime, is_select "+") " +
+                    "VALUES ( '" + rid + "','"+ singleChatList.getSendName()+"', '"+ singleChatList.getRecieverName() +"', '"+ singleChatList.getDate() +"' , '"+ singleChatList.getMessage() +"', '"+ singleChatList.getIsread() +"', '"+ singleChatList.getDeliver() +"', '"+ singleChatList.getType() +"'" +
+                    ", '"+ singleChatList.getMid() +"', '"+ singleChatList.getResponse() +"', '"+ singleChatList.getTime() +"', '"+ singleChatList.getDocName() +"', '"+ singleChatList.getUname() +"', '"+ singleChatList.getHeading() +"', '"+ singleChatList.getTimedate() +"', '"+ singleChatList.isSelect() +"');");*/
+                ContentValues values= new ContentValues();
+                values.put("id", id);
+                values.put("name", emoji_name);
+                values.put("path", emoji_path);
+                db.replace(EMOJI_LIST,null,values);
+                //msqLiteDatabase.insertWithOnConflict(SINGLE_CHAT_TABLE,null,);
+                Log.d("No_internet_data","inserted");
+            }else{
+                Log.d("No_internet_data","Already present");
+            }        }catch (Exception e){
+            Log.d("EXCPTN", e.toString());
+        }finally {
+            if (cursor!=null){
+                cursor.close();
+            }
+            db.close();
+        }
+        //msqLiteDatabase.close();
+    }
+
+
+    public static String emojiPath(Context context,String ename){
+        SQLiteDatabase db = new DBData(context).getReadableDatabase();
+
+        db=new DBData(context).getWritableDatabase();
+        Log.d("Background_ename", ename);
+        String Query = "Select * from " + EMOJI_LIST + " where name = '" + ename+ "'";
+        Cursor cursor = db.rawQuery(Query, null);
+        cursor.moveToNext();
+        String path=cursor.getString(2);
+        cursor.close();
+        db.close();
+        Log.d("Background_ename",path);
+        return path;
+
+    }
 
     public static List<SingleChatModule> fetchAllSingleChatList(Context context,SingleChatModule module) {
 
@@ -200,7 +251,6 @@ public class DBUtil {
         SingleChatModule newType = fetchSingleChatList(context, (int) id);
         return newType;
     }
-
 
     public static List<ChatUserList> fetchAllChatList(Context context) {
 

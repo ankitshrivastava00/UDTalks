@@ -8,6 +8,8 @@ import android.provider.BaseColumns;
 
 public interface DBConstants extends BaseColumns {
 
+    // EMOJI LIST TABLE
+    public static final String EMOJI_LIST="emoji_list";
     //EMPLOYEE_LIST_TABLE
     public static final String CHAT_LIST_TABLE = "chat_list";
     //columns in the entry table

@@ -7,18 +7,16 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-
         android:layout_height="@dimen/margin_100dp"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/dime_5dp"
         android:layout_marginRight="@dimen/dime_10dp">
 
-        <ImageView
+    <ImageView
             android:id="@+id/outgoing_emoji_image"
             android:layout_width="@dimen/margin_100dp"
             android:layout_height="@dimen/margin_100dp"
             android:layout_alignParentRight="true"
-
             />
 
         <TextView
@@ -27,7 +25,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-
             android:layout_marginRight="@dimen/margin_20dp"
             android:layout_toLeftOf="@+id/tickMarkFirstOutEmoji"
             android:text="12.00 am"
@@ -41,7 +38,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="@dimen/dime_5dp"
-            android:src="@drawable/undelivered"
+            android:src="@drawable/delivered"
             android:visibility="visible" />
 
     </RelativeLayout>

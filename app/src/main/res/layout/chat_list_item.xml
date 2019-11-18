@@ -111,6 +111,14 @@
                     layout="@layout/incoming_contact_list"
                     android:visibility="gone"
                     ></include>
+ <include
+                    layout="@layout/incoming_emoji"
+                    android:visibility="gone"
+                    ></include>
+ <include
+                    layout="@layout/outgoing_emoji"
+                    android:visibility="gone"
+                    ></include>
 
 
             </RelativeLayout>

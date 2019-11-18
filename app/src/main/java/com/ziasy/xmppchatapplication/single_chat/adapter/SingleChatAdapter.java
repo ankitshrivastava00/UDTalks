@@ -29,11 +29,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.daimajia.swipe.SwipeLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.ziasy.xmppchatapplication.R;
+import com.ziasy.xmppchatapplication.activity.ProfileActivity;
 import com.ziasy.xmppchatapplication.callback.ScrollInterface;
 import com.ziasy.xmppchatapplication.common.Confiq;
 import com.ziasy.xmppchatapplication.common.ConnectionDetector;
 import com.ziasy.xmppchatapplication.common.Permission;
 import com.ziasy.xmppchatapplication.common.SessionManagement;
+import com.ziasy.xmppchatapplication.database.DBUtil;
 import com.ziasy.xmppchatapplication.mapbox.MapBoxActivity;
 import com.ziasy.xmppchatapplication.model.JsonModelForChat;
 import com.ziasy.xmppchatapplication.model.SingleChatModule;
@@ -97,6 +99,9 @@ public class SingleChatAdapter extends RecyclerView.Adapter<SingleChatAdapter.Vi
         viewHolder.incoming_location_relative.setVisibility(View.GONE);
         viewHolder.outgoing_linear_contact.setVisibility(View.GONE);
         viewHolder.incoming_linear_contact.setVisibility(View.GONE);
+        viewHolder.outgoing_relative_emoji.setVisibility(View.GONE);
+        viewHolder.incoming_relative_emoji.setVisibility(View.GONE);
+
        if (message.getSenderId().equalsIgnoreCase(new SessionManagement(context).getKeyId())) {
 
            switch (message.getChatType()){
@@ -130,10 +135,8 @@ public class SingleChatAdapter extends RecyclerView.Adapter<SingleChatAdapter.Vi
                                    context.startActivity(i);
                                }else
                                {
-
                                    Intent  intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                                    context.startActivity(intent1);
-
                                }
                            }
                        }
@@ -148,13 +151,24 @@ public class SingleChatAdapter extends RecyclerView.Adapter<SingleChatAdapter.Vi
                    viewHolder.outgoing_contact_view.setOnClickListener(new View.OnClickListener() {
                        @Override
                        public void onClick(View view) {
-                          /* Intent i = new Intent(context, ProfileActivity.class);
+                           Intent i = new Intent(context, ProfileActivity.class);
                            i.putExtra("name", str[0]);
                            i.putExtra("rid", str[2]);
                            i.putExtra("did", str[3]);
-                           context.startActivity(i);*/
+                           context.startActivity(i);
                        }
                    });
+                   break;
+
+                   case "emoji":
+                       viewHolder.outgoing_relative_emoji.setVisibility(View.VISIBLE);
+                       viewHolder.outgoing_emoji_time.setText(message.getTime());
+                       /*Resources res =  context.getResources();*/
+                       File imgFile=new File(DBUtil.emojiPath(context,message.getMessage()));
+                       Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                    /*int resID = res.getIdentifier(mDrawableName , "drawable", context.getPackageName());
+                    Drawable drawable = res.getDrawable(resID );*/
+                       viewHolder.outgoing_emoji_image.setImageBitmap(myBitmap);
                    break;
                    default:
                        viewHolder.outgoing_linear_contact.setVisibility(View.GONE);
@@ -163,7 +177,8 @@ public class SingleChatAdapter extends RecyclerView.Adapter<SingleChatAdapter.Vi
                        viewHolder.parent_layout.setVisibility(View.GONE);
                        viewHolder.outgoing_location_relative.setVisibility(View.GONE);
                        viewHolder.incoming_location_relative.setVisibility(View.GONE);
-
+                       viewHolder.outgoing_relative_emoji.setVisibility(View.GONE);
+                       viewHolder.incoming_relative_emoji.setVisibility(View.GONE);
                        break;
            }
         }
@@ -200,10 +215,8 @@ public class SingleChatAdapter extends RecyclerView.Adapter<SingleChatAdapter.Vi
                                    context.startActivity(i);
                                }else
                                {
-
                                    Intent  intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                                    context.startActivity(intent1);
-
                                }
 
                            }
@@ -218,30 +231,39 @@ public class SingleChatAdapter extends RecyclerView.Adapter<SingleChatAdapter.Vi
                    viewHolder.incoming_view_image.setOnClickListener(new View.OnClickListener() {
                        @Override
                        public void onClick(View view) {
-                           /*Intent i = new Intent(context, ProfileActivity.class);
+                           Intent i = new Intent(context, ProfileActivity.class);
                            i.putExtra("name", strData[0]);
                            i.putExtra("rid", strData[2]);
                            i.putExtra("did", strData[3]);
-                           context.startActivity(i);*/
+                           context.startActivity(i);
                        }
                    });
                    break;
-               default:
 
+               case "emoji":
+                   viewHolder.incoming_emoji_time.setText(message.getTime());
+
+                  viewHolder.incoming_relative_emoji.setVisibility(View.VISIBLE);
+                   File imgFile=new File(DBUtil.emojiPath(context,message.getMessage()));
+                   Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                    /*int resID = res.getIdentifier(mDrawableName , "drawable", context.getPackageName());
+                    Drawable drawable = res.getDrawable(resID );*/
+                   viewHolder.incoming_emoji_image.setImageBitmap(myBitmap);
+                   break;
+               default:
                    viewHolder.incoming_linear_contact.setVisibility(View.GONE);
                    viewHolder.outgoing_linear_contact.setVisibility(View.GONE);
-
                    viewHolder.outgoing_location_relative.setVisibility(View.GONE);
                    viewHolder.layout.setVisibility(View.GONE);
                    viewHolder.incoming_location_relative.setVisibility(View.GONE);
                    viewHolder.parent_layout.setVisibility(View.GONE);
+                   viewHolder.outgoing_relative_emoji.setVisibility(View.GONE);
+                   viewHolder.incoming_relative_emoji.setVisibility(View.GONE);
                    break;
            }
 
         }
       /*  switch (message.getChatType()) {
-
-
         }
         *//*  final SingleChatModule message = (SingleChatModule) chatMessageList.get(position);
         sd = new SessionManagement(context);
