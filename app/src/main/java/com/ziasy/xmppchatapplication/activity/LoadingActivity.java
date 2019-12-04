@@ -83,7 +83,7 @@ public class LoadingActivity extends AppCompatActivity {
                         Log.d("Background_de","completed");
 
                         if (iloop==79){
-                            sd.setLoginStatus("true");
+                            sd. setLoginStatus("true");
 
                             Intent i = new Intent(LoadingActivity.this, ChatUserListActivity.class);
                             startActivity(i);

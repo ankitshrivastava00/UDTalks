@@ -283,7 +283,7 @@ public class DBUtil {
         return day;
     }
 /*
-    public static ChatUserList fetchSingleUserChatList(Context context, int id) {
+        public static ChatUserList fetchSingleUserChatList(Context context, int id) {
         String[] FROM = {CHAT_USER_ID, CHAT_USER_NAME, CHAT_USER_DESCRIPTION, CHAT_USER_LASTMESSAGE, CHAT_USER_DATETIME, CHAT_USER_TIME,
                 CHAT_USER_USERSTATUS,CHAT_USER_PHOTO,CHAT_USER_DTYPE,CHAT_USER_MESSAGE,CHAT_USER_CHATTYPE,CHAT_USER_DID,CHAT_USER_ADMIN,CHAT_USER_LIST_COUNT,CHAT_USER_MUTE};
 
@@ -368,12 +368,30 @@ public class DBUtil {
         ContentValues values = new ContentValues();
 
         values.put(CHAT_USER_LASTMESSAGE, "");
-//x            msqLiteDatabase.update(CHAT_LIST_TABLE, values, "id= '" + id + "' AND chattype = 'group'" , null);
-
         db.update(CHAT_LIST_TABLE, values," name= '"+name+"'",null);
         db.close();
     }
 
+    public static void deleteSingleChatEach(Context context,int id,String recieverId ,String name) {
+
+
+        SQLiteDatabase db = new DBData(context).getWritableDatabase();
+        String where = " " +SINGLE_CHAT_RECIEVER_ID+ " = '"+ id +"'";
+        db.delete(SINGLE_CHAT_TABLE, where, null);
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + SINGLE_CHAT_TABLE + " WHERE (( " +SINGLE_CHAT_RECIEVER_ID+ " = '"+ recieverId +"' AND " +SINGLE_CHAT_SENDER_ID+ " = '"+ new SessionManagement(context).getKeyId() + "' ) OR ( " +SINGLE_CHAT_SENDER_ID+ " = '"+ recieverId +"' AND " +SINGLE_CHAT_RECIEVER_ID+ " = '"+ new SessionManagement(context).getKeyId() + "' )) ", null);;
+
+
+       // SELECT * FROM tablename ORDER BY column DESC LIMIT 1;
+
+
+
+        //ContentValues values = new ContentValues();
+
+       // values.put(CHAT_USER_LASTMESSAGE, "");
+       // db.update(CHAT_LIST_TABLE, values," name= '"+name+"'",null);
+        db.close();
+    }
     public static boolean checkChatList(Context context, String id) {
         // array of columns to fetch
         String[] columns = {CHAT_USER_NAME};

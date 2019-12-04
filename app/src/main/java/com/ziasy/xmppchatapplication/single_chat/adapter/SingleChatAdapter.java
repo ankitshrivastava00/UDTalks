@@ -92,6 +92,11 @@ public class SingleChatAdapter extends RecyclerView.Adapter<SingleChatAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int position) {
+        if (selected_usersList.contains(chatMessageList.get(position))) {
+            viewHolder.mainLinearLayout.setBackgroundColor(context.getResources().getColor(R.color.grey_light));
+        } else {
+            viewHolder.mainLinearLayout.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
+        }
         final SingleChatModule message = (SingleChatModule) chatMessageList.get(position);
         viewHolder.layout.setVisibility(View.GONE);
         viewHolder.parent_layout.setVisibility(View.GONE);

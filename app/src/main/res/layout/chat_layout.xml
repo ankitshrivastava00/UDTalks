@@ -106,12 +106,10 @@
                     android:layout_width="0dp"
                     android:layout_height="56dp"
                     android:layout_gravity="end"
-
                     android:layout_weight=".15"
                     android:gravity="right"
                     android:scaleType="centerInside"
                     android:src="@drawable/delete_image" />
-
 
                 <ImageView
                     android:id="@+id/cab_bomb_btn"
@@ -171,13 +169,11 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerId"
-
                             tools:listitem="@layout/incoming_reply_msg"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_above="@+id/replyLinearwerwer"
                             android:paddingBottom="5dp" />
-
 
 <LinearLayout
     android:id="@+id/replyLinearwerwer"
@@ -193,7 +189,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:visibility="gone"
-
     android:orientation="vertical"
     android:background="@color/white"
 
@@ -206,8 +201,6 @@
         android:layout_marginLeft="@dimen/dime_20dp"
         android:layout_marginRight="@dimen/dime_5dp"
         android:weightSum="1">
-
-
 
         <ImageView
             android:id="@+id/incoming_reply_image_cancel"
@@ -373,4 +366,3 @@
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>
-

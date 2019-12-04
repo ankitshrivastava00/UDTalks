@@ -1,10 +1,14 @@
 package com.ziasy.xmppchatapplication.single_chat.activity;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.content.Intent;
 import android.content.OperationApplicationException;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
@@ -38,6 +42,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.devlomi.record_view.OnBasketAnimationEnd;
 import com.devlomi.record_view.OnRecordListener;
 import com.devlomi.record_view.RecordButton;
@@ -53,6 +59,7 @@ import com.ziasy.xmppchatapplication.common.ChatApplication;
 import com.ziasy.xmppchatapplication.common.ConnectionDetector;
 import com.ziasy.xmppchatapplication.common.CustomEditText;
 import com.ziasy.xmppchatapplication.common.Permission;
+import com.ziasy.xmppchatapplication.common.RecyclerItemClickListener;
 import com.ziasy.xmppchatapplication.common.SessionManagement;
 import com.ziasy.xmppchatapplication.database.DBUtil;
 import com.ziasy.xmppchatapplication.listner.DrawableClickListener;
@@ -69,9 +76,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import io.socket.client.Socket;
@@ -86,11 +97,18 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
     private boolean mTyping = false;
     private static final int TYPING_TIMER_LENGTH = 600;
     private RelativeLayout chatName;
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+    private boolean isMultiSelect = false;
     // PopLayoutForAddAttachment
-    private LinearLayout SellPost, BuyPost, MomentPick, ImageUpload, TakePicture, Video, TakeVideo, MediaTools, Location, ContactInfo, FileUpload, AudioFile;
+    private LinearLayout linear_chat_option,SellPost, BuyPost, MomentPick, ImageUpload, TakePicture, Video, TakeVideo, MediaTools, Location, ContactInfo, FileUpload, AudioFile;
     //PopLayoutForChatSetting
     private LinearLayout searchLayout,clearChatLinear, addContactLinear, searchLinear, mediaLinear, notificationLinear, wallpaperLinear;
     private List<SingleChatModule>list;
+    private ArrayList<String> copy_list;
+    HashMap<Integer,String> dateDeletMap= new HashMap<>();
+    private ClipboardManager myClipboard;
+    private ClipData myClip;
     private SingleChatAdapter adapter;
     private ImageView backImg;
     private CustomEditText searchEt;
@@ -99,6 +117,7 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
     private RecyclerView recyclerView;
     private String receiverId, receiverName,did;
     private TextView txt_name,cancelSearch, txt_online_status, typingStatus;
+    private ImageView btnForwordCab, btndeleteCab, cab_bomb_btn, cab_copy_btn, btnReplyCab, btnUnselect;
     private RecordButton recordButton;
     private RecordView recordView;
     private LinearLayout hideEditText;
@@ -111,6 +130,7 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
     private PopupWindow popupWindow, popupWindowForSetting;
     public boolean GpsStatus ;
     private LocationManager locationManager ;
+    private ArrayList<SingleChatModule> multiselect_list;
     private static final int MY_PERMISSIONS_CONTACT_SHARE = 205;
     private static final int REQUEST_CODE_AUTOCOMPLETE = 170;
     private static final String TAG = "SingleChatActivity";
@@ -131,7 +151,7 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
         backImg = (ImageView) findViewById(R.id.backImg);
         txt_name = (TextView) findViewById(R.id.nameTv);
         smileyBtn = (ImageView) findViewById(R.id.smileyBtn);
-
+        linear_chat_option = (LinearLayout) findViewById(R.id.linear_chat_option);
         txt_name.setText(receiverName);
         recyclerView=(RecyclerView)findViewById(R.id.recyclerId);
         hideEditText = (LinearLayout) findViewById(R.id.hideSliding);
@@ -142,11 +162,212 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
         msg_edittext = (EditText) findViewById(R.id.msgEditText);
         txt_online_status = (TextView) findViewById(R.id.statusTv);
         typingStatus = (TextView) findViewById(R.id.typingStatus);
+
+        btnForwordCab = (ImageView) findViewById(R.id.btnForwordCab);
+        btndeleteCab = (ImageView) findViewById(R.id.btndeleteCab);
+        cab_bomb_btn = (ImageView) findViewById(R.id.cab_bomb_btn);
+        cab_copy_btn = (ImageView) findViewById(R.id.cab_copy_btn);
+        btnReplyCab = (ImageView) findViewById(R.id.btnReplyCab);
+        btnUnselect = (ImageView) findViewById(R.id.btnUnselect);
+
         imageBack.setOnClickListener(this);
         sendButton.setOnClickListener(this);
         cd=new ConnectionDetector(SingleChatActivity.this);
         sd=new SessionManagement(SingleChatActivity.this);
+
+        copy_list = new ArrayList<String>();
+        multiselect_list = new ArrayList<SingleChatModule>();
+        myClipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+
         scrollTodown();
+
+
+
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if (isMultiSelect)
+                    multi_select(position);
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                if (!isMultiSelect) {
+                    dateDeletMap=new HashMap<>();
+                    multiselect_list = new ArrayList<SingleChatModule>();
+                    copy_list = new ArrayList<String>();
+                    isMultiSelect = true;
+                    linear_chat_option.setVisibility(View.VISIBLE);
+                }
+                multi_select(position);
+            }
+        }));
+
+
+
+        btnForwordCab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (multiselect_list.size() > 0) {
+
+                    ArrayList<String> stringBuilderTpye = new ArrayList<>();
+                    ArrayList<String> stringBuilderMessage = new ArrayList<String>();
+                    for (int i = 0; i < multiselect_list.size(); i++) {
+                        stringBuilderTpye.add(multiselect_list.get(i).getChatType());
+                        stringBuilderMessage.add(multiselect_list.get(i).getMessage());
+                    }
+
+                    linear_chat_option.setVisibility(View.GONE);
+                    isMultiSelect = false;
+                    multiselect_list = new ArrayList<SingleChatModule>();
+                    adapter.selected_usersList = multiselect_list;
+                    adapter.notifyDataSetChanged();
+/*
+                    Intent intent = new Intent(ChatActivity.this, ForwardActivity.class);
+                    intent.putStringArrayListExtra("forwardString", stringBuilderMessage);
+                    intent.putStringArrayListExtra("type", stringBuilderTpye);
+
+                    startActivityForResult(intent, 88);*/
+
+                    Toast.makeText(getApplicationContext(), "Forward", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Kya Hua", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        btndeleteCab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (multiselect_list.size() > 0) {
+                    if (dateDeletMap.size()>0){
+                        for (Integer key : dateDeletMap.keySet()) {
+                            if (key<=list.size()-1){
+                                if (multiselect_list.contains(list.get(key))){
+                                    for (int i=key+1;i< list.size();i++){
+                                        if (!multiselect_list.contains(list.get(i))){
+                                            if (list.get(i).getDate().equals("")){
+                                                list.get(i).setDate(dateDeletMap.get(key));
+                                               // localDBHelper.updateDateView(list.get(i).getMid(),dateDeletMap.get(key),"single");
+                                                break;
+                                            }else{
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }else{
+                                    if (!list.get(key).getDate().equals("")){
+                                        list.get(key).setDate(dateDeletMap.get(key));
+                                      //  localDBHelper.updateDateView(list.get(key).getMid(),dateDeletMap.get(key),"single");
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (int i = 0; i < multiselect_list.size(); i++) {
+                        stringBuilder.append("," + "'" + multiselect_list.get(i).getId() + "'");
+                        list.remove(multiselect_list.get(i));
+                       // DBUtil.deleteSingleChatEach(SingleChatActivity.this,Integer.parseInt(multiselect_list.get(i).getId()),receiverName);
+                    }
+                    /*int lastmsg_pos= multiselect_list*/
+                  //  JsonObject jsonObject1 = new JsonObject();
+                  //  jsonObject1.addProperty("id", sd.getKeyId());
+                  //  jsonObject1.addProperty("uid", String.valueOf(stringBuilder));
+
+                   // localDBHelper.deleteSinglechat(String.valueOf(stringBuilder),0, multiselect_list);
+                   // Log.d("MIDMID", jsonObject1 + "");
+                   // mSocket.emit("deleteMessage", jsonObject1);
+                    linear_chat_option.setVisibility(View.GONE);
+                    isMultiSelect = false;
+                    multiselect_list = new ArrayList<SingleChatModule>();
+                    dateDeletMap=new HashMap<>();
+                    adapter.selected_usersList = multiselect_list;
+                    adapter.chatMessageList = list;
+                    adapter.notifyDataSetChanged();
+
+                    Toast.makeText(getApplicationContext(), "Delete", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Kya Hua", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btnUnselect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (multiselect_list.size() > 0) {
+
+                    linear_chat_option.setVisibility(View.GONE);
+                    isMultiSelect = false;
+                    multiselect_list = new ArrayList<SingleChatModule>();
+                    adapter.selected_usersList = multiselect_list;
+                    adapter.notifyDataSetChanged();
+                } else {
+                }
+            }
+        });
+
+        cab_bomb_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (multiselect_list.size() > 0) {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (int i = 0; i < multiselect_list.size(); i++) {
+                        stringBuilder.append("," + "'" + multiselect_list.get(i).getId() + "'");
+
+                        list.remove(multiselect_list.get(i));
+                      //  DBUtil.deleteSingleChatEach(SingleChatActivity.this,Integer.parseInt(multiselect_list.get(i).getId()),receiverName);
+
+
+                    }
+                  //  JsonObject jsonObject1 = new JsonObject();
+                   // jsonObject1.addProperty("id", sd.getKeyId() + "," + receiverId);
+                   // jsonObject1.addProperty("uid", String.valueOf(stringBuilder));
+                   // localDBHelper.deleteSinglechat(String.valueOf(stringBuilder),1,multiselect_list);
+
+                    //Log.d("MIDMID", jsonObject1 + "");
+                    //mSocket.emit("deleteMessage", jsonObject1);
+                    linear_chat_option.setVisibility(View.GONE);
+
+                    isMultiSelect = false;
+                    multiselect_list = new ArrayList<SingleChatModule>();
+                    adapter.selected_usersList = multiselect_list;
+                    adapter.chatMessageList = list;
+                    adapter.notifyDataSetChanged();
+
+
+                }
+            }
+        });
+
+        cab_copy_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StringBuilder stringBuilder = new StringBuilder();
+                for (String s : copy_list) {
+                    if (stringBuilder.length() == 0) {
+                        stringBuilder.append(s);
+                    } else {
+                        stringBuilder.append("\n" + s);
+                    }
+                }
+                myClip = ClipData.newPlainText("text", stringBuilder);
+                myClipboard.setPrimaryClip(myClip);
+                linear_chat_option.setVisibility(View.GONE);
+                isMultiSelect = false;
+                multiselect_list = new ArrayList<SingleChatModule>();
+                adapter.selected_usersList = multiselect_list;
+                adapter.notifyDataSetChanged();
+                Toast.makeText(getApplicationContext(), "Copy", Toast.LENGTH_SHORT).show();
+                Log.d("COPYYY", copy_list.toString());
+            }
+        });
+
+
         smileyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -565,7 +786,7 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
                             adapter.notifyDataSetChanged();
                             scrollTodown();
                         }else {
-                            adapter=new SingleChatAdapter(SingleChatActivity.this,list,list,"");
+                            adapter=new SingleChatAdapter(SingleChatActivity.this,list,multiselect_list,"");
                             recyclerView.setAdapter(adapter);
                             scrollTodown();
                         }
@@ -896,7 +1117,7 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
     }
     public  void add(SingleChatModule singleChatModule){
         list =  DBUtil.fetchAllSingleChatList(SingleChatActivity.this,singleChatModule);
-        adapter=new SingleChatAdapter(SingleChatActivity.this,list,list,"");
+        adapter=new SingleChatAdapter(SingleChatActivity.this,list,multiselect_list,"");
         recyclerView.setAdapter(adapter);
     }
 
@@ -934,7 +1155,92 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
                         break;
          }
     }
+    private void multi_select(int position) {
+        //  if (mActionMode != null) {
+        try{
+            if (multiselect_list.contains(list.get(position))) {
+                multiselect_list.remove(list.get(position));
+                copy_list.remove(list.get(position).getMessage());
+                if (!list.get(position).getDate().equals("")){
+                    if (list.size()!=position){
+                        dateDeletMap.remove(position+1);
+                    }
+                }
+            } else {
+                if (!list.get(position).getDate().equals("")){
+                    if (list.size()!=position){
+                        dateDeletMap.put(position+1,list.get(position).getDate());
+                    }
+                }
+                multiselect_list.add(list.get(position));
+                copy_list.add(list.get(position).getMessage());
+            }
 
+            for (SingleChatModule bomb : multiselect_list) {
+                try {
+                    String timeStamp2 =bomb.getDatetime();
+
+                    Date d1= format.parse(timeStamp);
+                    Date d2= format.parse(timeStamp2);
+                    long diff = d1.getTime() - d2.getTime();
+                    long diffDays = diff / (24 * 60 * 60 * 1000);
+                    long diffMinutes= diff / (60 * 1000) % 60;
+                    if (diffMinutes<2 && diffDays==0){
+                        cab_bomb_btn.setVisibility(View.VISIBLE);
+                    }else{
+                        Log.d("Background_service","Bomb delete canceled"+diffMinutes+diffDays);
+
+                        cab_bomb_btn.setVisibility(View.GONE);
+                        break;
+                    }
+                } catch (ParseException e) {
+                    Log.d("Background_service","Bomb delete canceled"+e.getMessage());
+                }
+                if (!bomb.getSenderId().equalsIgnoreCase(sd.getKeyId())) {
+                    cab_bomb_btn.setVisibility(View.GONE);
+                    break;
+                } else {
+                    cab_bomb_btn.setVisibility(View.VISIBLE);
+
+                }
+            }
+            for (SingleChatModule model : multiselect_list) {
+                if (!model.getChatType().equalsIgnoreCase("msg")) {
+                    cab_copy_btn.setVisibility(View.GONE);
+
+                    break;
+                } else {
+                    cab_copy_btn.setVisibility(View.VISIBLE);
+                }
+            }
+
+            if (multiselect_list.size() > 0) {
+                linear_chat_option.setVisibility(View.VISIBLE);
+                if (multiselect_list.size() == 1) {
+                    btnReplyCab.setVisibility(View.VISIBLE);
+                } else {
+                    btnReplyCab.setVisibility(View.GONE);
+                }
+            } else {
+
+                linear_chat_option.setVisibility(View.GONE);
+                isMultiSelect = false;
+                multiselect_list = new ArrayList<SingleChatModule>();
+                linear_chat_option.setVisibility(View.GONE);
+            }
+
+            refreshAdapter();
+        }catch (Exception e){
+            Log.d("Background_multiselect",e.toString());
+        }
+        // }
+    }
+
+    private void refreshAdapter() {
+        adapter.selected_usersList = multiselect_list;
+        adapter.chatMessageList = list;
+        adapter.notifyDataSetChanged();
+    }
     private void insertData(String message,String chattype){
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -1125,7 +1431,7 @@ public class SingleChatActivity extends AppCompatActivity implements View.OnClic
                         adapter.notifyDataSetChanged();
                         scrollTodown();
                     }else {
-                        adapter=new SingleChatAdapter(SingleChatActivity.this,list,list,"");
+                        adapter=new SingleChatAdapter(SingleChatActivity.this,list,multiselect_list,"");
                         recyclerView.setAdapter(adapter);
                         scrollTodown();
                     }
